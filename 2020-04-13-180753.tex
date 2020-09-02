@@ -1,17 +1,38 @@
-\documentclass[german,12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{article}
 \usepackage[utf8]{inputenc}
+  \setlength{\parindent}{0cm}
 \usepackage[backend=biber,
 style=authoryear,
 ]{biblatex}
 \addbibresource{Literatur_Primes.bib}
+\setcounter{biburllcpenalty}{8000}
+\setcounter{biburlucpenalty}{8000}
+\usepackage{breakcites}
+
+\usepackage{array}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
 
 \usepackage{soul}
-\usepackage{ulem}
 \usepackage{xcolor}
-\usepackage{amsmath}
+\usepackage[intlimits]{amsmath}
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage{amsthm}
+ \theoremstyle{definition}
+  \newtheorem{defi}{Definition}[section]
+  \newtheorem{satz}{Satz}[subsection]
+  \newtheorem{bsp}{Beispiel}[subsection]
+  \newtheorem{lemma}{Lemma}[subsection]
+  \newtheorem{corollar}{Korollar}[subsection]
+ \renewcommand{\proofname}{Beweis}
+  \newtheorem{beweis}{Beweis}[subsection]
+  \newtheorem{vermutung}{Vermutung}[subsection]
+  \newtheorem{bemerkung}{Bemerkung}
+  \newtheorem{algorithmus}{Algorithmus}[subsection]
+  \newtheorem{exkurs}{Exkurs}
+
+\usepackage{enumitem}
+\usepackage{setspace}
 \usepackage{sagetex}
 
 % set font encoding for PDFLaTeX, XeLaTeX, or LuaTeX
@@ -21,7 +42,6 @@ style=authoryear,
 \else
   \usepackage[scaled=Wert]{helvet}
   \usepackage[T1]{fontenc}
-  \usepackage[utf8]{inputenc}
   \usepackage{lmodern}
   \usepackage[ngerman]{babel}
 \fi
@@ -30,6 +50,8 @@ style=authoryear,
 \usepackage{parskip}
 \usepackage{csquotes}
 \usepackage{graphicx}
+
+
 
 \title{Bachelorarbeit\\Prime Time for a Prime Number}
 \author{Rupertus Weigner}
@@ -50,23 +72,25 @@ style=authoryear,
 \pagenumbering{roman}
 \section*{Vorwort}
 \addcontentsline{toc}{section}{\protect{}Vorwort}
-Die Bachelor Arbeit verfasse ich im Themenbereich der Primzahlen.
+Die Bachelorarbeit verfasse ich im Themenbereich der Primzahlen.
 Ausgangspunkt die für diese These ist, dass am 7. Januar 2016 die damals größte Primzahl in einem Computer Labor, am Satelliten Campus an der University of Central Missouri, entdeckt worden ist.
-Die New York Times hat am 21. Januar 2016 diese großartige Entdeckung veröffentlicht und sie als "bigP"\ betitelt.\\
+Die New York Times hat am 21. Januar 2016 diese großartige Entdeckung veröffentlicht und sie als "bigP"\ betitelt.
 \begin{center}
 $bigP_{2016} = 2^{74.207.281}-1$ $\rightarrow$ 2016 von Cooper, u.a.
-\end{center}\
-\\Diese Primzahl ist zu groß um ausgeschrieben zu werden.
+\end{center}
+
+Diese Primzahl ist zu groß um ausgeschrieben zu werden.
 Um es sich bildlich besser vorstellen zu können würde diese Zahl 6.000 bis 7.000 DIN-A4-Blätter füllen können.
 Dies ist abhängig von der Größe der verwendeten Schriftgröße.
 Um diese Zahl von Menschenhand auszuschreiben würde eine Person mehr als drei Monate dafür benötigen.
 Eine solche Kombination an Zahlen nennt man "Mersenne-Primzahl"\ (\cite{TheNewYorkTimes2016}).
-Im Laufe dieser Arbeit wurden jedoch 2 weitere größere Mersenne-Primzahlen entdeckt:\\
+Im Laufe dieser Arbeit wurden jedoch 2 weitere größere Mersenne-Primzahlen entdeckt:
 \begin{center}
 $M_{77.232.917} = 2^{77.232.917}-1$ $\rightarrow$ 2017 von Jonathan Pace (GIMPS)\\
 $M_{82.589.933} = 2^{82.589.933}-1$ $\rightarrow$ 2018 von Patrick Laroche (GIMPS)
-\end{center}\
-\\Diese Art von Primzahlen sind besonders, da in dieser Schriftweise $2^n-1$ erst 51 Primzahlen gefunden wurden (\cite{ListederMersennePrimzahlen2020}).\ ... Vielleicht ist das auch die Einleitung.
+\end{center}
+
+Diese Art von Primzahlen sind besonders, da in dieser Schriftweise $2^n-1$ erst 51 Primzahlen gefunden wurden (\cite{ListederMersennePrimzahlen2020}).\ ... Vielleicht ist das auch die Einleitung.
 \newpage
 
 \tableofcontents
@@ -75,7 +99,8 @@ $M_{82.589.933} = 2^{82.589.933}-1$ $\rightarrow$ 2018 von Patrick Laroche (GIMP
 
 \section*{Erklärung der Symbole}
 \addcontentsline{toc}{section}{\protect{}Erklärung der Symbole}
-Hier werden die in dieser Arbeit verwendeten und beschriebenen Symbole für einen schnellen Überblick erklärt:\\
+Hier werden die in dieser Arbeit verwendeten und beschriebenen Symbole für einen schnellen Überblick erklärt:
+
 \begin{tabbing}
 xxxxxxxxxxxxxxxxxxxxxxx\=xxxxxxxxxxxxxxxxxxxxxxx\kill
 \large Symbol             \> \large Erläuterung\\
@@ -84,6 +109,7 @@ xxxxxxxxxxxxxxxxxxxxxxx\=xxxxxxxxxxxxxxxxxxxxxxx\kill
 \\$\mathbb{Q}$            \> rationale Zalen\\
 \\$\mathbb{I}$            \> irrationale Zahlen\\
 \\$\mathbb{R}$            \> reelle Zahlen\\
+\\$\mathbb{C}$            \> komplexe Zahlen\\
 \\$\mathbb{P}$            \> Primzahlen\\
 \\n $\in$ $\mathbb{N}$    \> das Element n ist in $\mathbb{N}$ enthalten\\
 \\$\forall$               \> für alle Elemente\\
@@ -105,9 +131,43 @@ xxxxxxxxxxxxxxxxxxxxxxx\=xxxxxxxxxxxxxxxxxxxxxxx\kill
 \\$\geq$                  \> größer als oder gleich\\
 \\<                       \> kleiner als\\
 \\$\leq$                  \> kleiner als oder gleich\\
+\\$p\#$                   \> Produkt der Primzahlen oder auch Primfakultät\\
+\\$p \to \infty$          \> $p$ strebt nach unendlich\\
 \\$\Box$                  \> Ende des Beweises
 
 \end{tabbing}
+\newpage
+
+\section*{Erklärung der Begriffe}
+\addcontentsline{toc}{section}{\protect{}Erklärung der Begriffe}
+Um dem Leser einen leichten Einstieg zu ermöglichen werden hier die in dieser Arbeit verwendeten Begriffe und deren Bedeutung in Kürze erklärt.
+
+\subsection*{Definition}
+Mit Definitionen werden interessante Eigenschaften verdeutlicht.
+Es können aber auch verschiedene Objekte voneinander unterschieden werden.\newline
+Bsp.: \textit{Eine Zahl ist Prim wenn sie eine natürliche Zahl darstellt, welche größer ist als 1 und nur durch 1 und sich selbst teilbar ist.}
+\subsection*{Wahre Aussagen}
+Die kommenden drei Schlagworte beschreiben Aussagen, welche wahr sind und für die es einen Beweis gibt.
+\subsubsection*{Sätze}
+Ein Satz wird auch als Theorem bezeichnet und beschreibt jedes bedeutsame Ergebnis, sofern der Kern der Aussage wahr ist.\newline
+Bsp.: \textit{Es gibt unendlich viele Primzahlen.}
+\subsubsection*{Lemmata}
+Der Unterschied zwischen einem Lemma und einem Theorem ist sehr undurchsichtig.
+Jedoch wird ein Lemma als weniger wichtig erachtet als ein Satz.
+Lemmata werden als Zwischenschritte herangezogen, um einen Beweis schlussendlich darzustellen.
+Oft kommt es vor, dass Lemmata sich als nützlicher erweisen als die finale Aussage des Beweises.
+\subsubsection*{Korollare}
+Korollare sind weiterführende und interessante Aussagen, welche aus einem Satz hergeleitet werden.
+
+\subsection*{Andere Begriffe}
+\subsubsection*{Beweise}
+Ein Beweis stellt die finale und korrekte Lösung eines Problems dar.
+Er dient als Begründung, warum eine Aussage wahr ist.
+\subsubsection*{Vermutungen}
+Im Gegensatz zum Beweis ist die Vermutung eine Aussage, die zwar für wahr gehalten wird, es jedoch keine finale Lösung gibt.
+\subsubsection*{Axiome}
+Axiome stellen das Fundament für mathematische Gegebenheiten dar.
+Sie können in Definitionen vorkommen, aber auch Tatsachen beschreiben, welche keinen Beweis benötigen, da es in der Natur der eigentlich zu beschreibenden Sache selbst liegt um wahr zu sein (vgl. \cite[119--122]{Houston2012}).
 \newpage
 
 \section*{Einleitung}
@@ -124,7 +184,6 @@ Die folgenden Seiten werden teils Auffrischung, teils neu sein und werden einen 
 Beschrieben wird in Kürze unter anderem in wie weit man Zahlen eingliedern kann und welchen Rechenregeln sie unterliegen.
 
 \subsection{Mathematische Grundregeln}\label{Mathematische Grundregeln}
-%So Eigenschaften wie Assoziativitaet, Kommutativitaet, Distributivitaet waeren hier noch hilfreich
 Aus dem Schulunterricht kennt man die klassischen arithmetischen Operationen, wie Addition, Subtraktion, Multiplikation und Division.
 Die Berechnung dieser sind simpler Natur und lauten:
 \begin{itemize}
@@ -145,7 +204,75 @@ Quadrieren bedeutet, dass man eine Zahl oder Variable mit sich selbst multiplizi
 \item Quadrieren von Zahlen: $3 \cdot 3 = 3^2 = 9$
 \item Quadrieren von Variablen: $x \cdot x = x^2$
 \end{itemize}
-Die Thematik des Quadrierens wird im späteren Verlauf dieser Arbeit nochmals aufgegriffen und vertieft. 
+Die Thematik des Quadrierens wird im späteren Verlauf dieser Arbeit nochmals aufgegriffen und vertieft.
+
+\subsection{Mathematische Gesetze}
+In diesem Kapitel werden die Grundprinzipien Assoziativgesetz, Kommutativgesetz und das Distributivgesetz kurz beschrieben.
+
+\textbf{Assoziativgesetz}\newline
+Wird auch Verknüpfungs- oder Verbindungsgesetz genannt und regelt die Berechnung mit Klammern und deren Berechnungsreihenfolge.
+Gegeben sei
+\begin{align}
+1 \cdot 2 \cdot 5 &= 1 \cdot (2 \cdot 5) = (1 \cdot 2) \cdot 5, oder \\
+1 + 2 + 5         &= 1 +(2 + 5)          = (1 + 2) + 5
+\end{align}
+Für die Multiplikation kann die Berechnung wie folgt aufgestellt werden:
+\begin{align}
+1 \cdot 2 \cdot 5                &= 10 \\
+1 \cdot (2 \cdot 5) = 1 \cdot 10 &= 10 \\
+(1 \cdot 2) \cdot 5 = 2 \cdot 5  &= 10.
+\end{align}
+Für die Addition gilt folgendes:
+\begin{align}
+1 + 2 + 5   &= 8 \\
+1 + (2 + 5) &= 8 \\
+(1 + 2) + 5 &= 8
+\end{align}
+Bei der Multiplikation sowie bei der Addition erhält man gleiche Ergebnisse.
+Man kann erkennen, dass die Setzung der Klammern in beiden Fällen hinfällig wird.
+Allgemeiner kann man auch ausdrücken:
+\begin{align}
+a \cdot b \cdot c &= a \cdot (b \cdot c) = (a \cdot b) \cdot c \\
+a + b + c         &= a + (b + c) = (a + b) + c
+\end{align}
+Bei Multiplikation sowie bei Addition ist das Verhältnis somit assoziativ, da die Reihenfolge der Berechnung keine Rolle spielt.
+
+Doch wie verhält es sich bei Subtraktion, Division und Rechnen mit Potenzen?
+Um hier nicht zu sehr in die Tiefe zu gehen kann hier abschließend gesagt werden, dass die Klammersetzung durchaus bedeutsame Auswirkungen hat und sich diese nicht assoziativ verhalten.
+Dies bedeutet:
+\begin{align}
+a : b : c &\neq a : ( b : c) \neq (a : b) : c \\
+a - b - c &\neq a - ( b - c) \neq (a - b) - c \\
+a^{(b^c)} &\neq (a^b)^c
+\end{align}
+(vgl. \cite[5--7]{Adler2013} und \cite{AssociativityEncyclopediaofMathematics2016})
+
+\textbf{Kommutativgesetz}\newline
+Wird auch Vertauschungsgesetz genannt.
+Dieses kommt zur Anwendung sofern Bestandteile einer Kalkulation vertauscht werden können, ohne aber das Ergebnis zu verfälschen.\newline
+Genau wie bei dem Assoziativgesetz verhalten sich Multiplikation und Addition kommutativ.
+Das heißt, dass $a \cdot b = b \cdot a$ zum selben Ergebnis führen.
+Genau wie $a + b = b + a$.\newline
+Das Verhalten bei Subtraktion, Division und das Rechnen mit Potenzen ist nicht kommutativ, da $a : b \neq b : a$, $a - b \neq b - a$ und $a^b \neq b^a$ gilt.
+(vgl. \cite{EncyclopediaofMathematics2014})
+
+\textbf{Distributivgesetz}\newline
+Wird auch Verteilungsgesetz genannt.
+Es regelt das Aufeinandertreffen von zwei Zweistelligen Berechnungen.
+Hier wird zwischen
+\begin{itemize}
+    \item linksdistributiv: $a \cdot (b \pm c) = a \cdot b \pm a \cdot c$
+    \item rechtsdistributiv: $(a \pm b) \cdot c = a \cdot c \pm b\cdot c$
+\end{itemize}
+unterschieden.
+In dieser Form verhalten sich beide Berechnungen distributiv zu einander.\newline
+Das Verhalten bei der Division ist nicht distributiv, da
+\begin{itemize}
+    \item linksdistributiv: $a : (b \pm c) \neq a :b \pm a : c)$
+    \item rechtsdistributiv: $(a \pm b) : c = a :c \pm b : c)$
+\end{itemize}
+(vgl. \cite{EncyclopediaofMathematics2016})
+
 
 \subsection{Eingliederung von Zahlen}\label{Eingliederung von Zahlen}
 Beginnen wir mit den \textbf{natürliche Zahlen} - $\mathbb{N}$ - \{0, 1, 2, 3, 4, ...\}.\\
@@ -212,22 +339,23 @@ Die Axiome (P1) bis (P5) beziehen sich auf das Zählen, die beiden weiteren Axio
 
 \begin{quote}
 \small
-\textbf{Bézout Lemma} beschreibt die \textbf{Existenz und Eindeutigkeit des Vorgängers} folgendermaßen:\newline
+Durch \textbf{Lemma} wird die \textbf{Existenz und Eindeutigkeit des Vorgängers} folgendermaßen beschrieben:\newline
 Jede von 0 verschiedene natürliche Zahl $n$ ist Nachfolger einer eindeutig bestimmten anderen natürlichen Zahl. Diese wird auch als Vorgänger von $n$ bezeichnet.\newline
 \autocite[85]{Steffen2013}
 \end{quote}
 
 \subsubsection{Zusammengesetzte Zahlen}\label{Zusammengesetzte Zahlen}
-Um ein noch besseres Bild der Primzahlen verschaffen zu können ist es essentiell zu verstehen wie der Begriff \textbf{"{zusammengesetzte Zahlen}"} zu verstehen ist.
+Um ein noch besseres Bild der Primzahlen verschaffen zu können ist es essentiell zu verstehen wie der Begriff "{zusammengesetzte Zahlen}"\ zu begreifen ist.
 Diese Zahlen bestehen aus mindestens 2 natürliche Zahlen.
 Wie genau dies aussieht wird, im späteren Verlauf dieser Arbeit, durch die Primfaktorzerlegung im Kapitel \ref{Beweise für die Existenz von Primzahlen} auf Seite \pageref{Primfaktorzerlegung} dargestellt und vermittelt ein gutes Bild wie Zahlen zusammengesetzt werden können.
-Definitionsgemäß werden diese Zahlen folgender Maßen beschrieben:\\
+Definitionsgemäß werden diese Zahlen folgender Maßen beschrieben:
+
 \textbf{Sofern eine Zahl $n > 1$ existiert, welche keine Primzahl ist, bezeichnet man diese als zusammengesetzte Zahl}.
-(vgl. \cite[13]{RempeGillen2009}).\\
+(vgl. \cite[13]{RempeGillen2009}).
 
-Nun haben wir einiges über natürliche Zahlen kennen gelernt. Sehen wir uns weitere Eingliederungen der Zahlen an.
+Nun haben wir einiges über natürliche Zahlen kennen gelernt. Sehen wir uns weitere Eingliederungen an.
 
-\textbf{Ganze Zahlen} - $\mathbb{Z} = \mathbb{N} \cup \{-n \mid n \in \mathbb{N}\}$.\\
+\textbf{Ganze Zahlen} - $\mathbb{Z} = \mathbb{N} \cup \{-n \mid n \in \mathbb{N}\}$.\newline
 Diese setzen sich wie die natürlichen Zahlen nur aus ganzen Zahlen zusammen, jedoch bestehen diese im Gegensatz zu natürlichen Zahlen nicht nur aus positiven, sondern enthält diese Menge auch negative Zahlen.
 Ebenfalls könnte man diese Zahlenreihe bis in die Unendlichkeit fortsetzen, jedoch in diesem Fall in die negative so wie auch in die positive Richtung \{-3, -2, -1, 0, 1, 2, 3, ...\}.
 Hier gibt es eine weitere Untermenge:
@@ -235,24 +363,24 @@ Hier gibt es eine weitere Untermenge:
 \item $\mathbb{Z}^*$ - sind alle ganzen Zahlen ohne der Zahl 0
 \end{itemize}
 
-\textbf{Rationale Zahlen} - $\mathbb{Q} = \{\frac{m}{n} \mid m \in \mathbb{Z}, n \in \mathbb{N}^*\}$.\\
+\textbf{Rationale Zahlen} - $\mathbb{Q} = \{\frac{m}{n} \mid m \in \mathbb{Z}, n \in \mathbb{N}^*\}$.\newline
 Dies sind jene Zahlen, welche sich durch einen Bruch darstellen lassen und deren Zähler und Nenner ganze Zahlen sind.
 Eine Ausnahme besteht bei der Division 0/0.
 Diese ist nicht erlaubt.
 Auch 0,758 lässt sich als Bruch darstellen $\rightarrow{0,758 = 758/1000}$.
 Diese Zahlen können positiv als aus negativ sein und können unter anderem eine unendliche Anzahl an Nachkommastellen aufweisen \{-7/5, -2/4, 1/2, 0,75, ...\}.
 
-\textbf{Irrationale Zahlen} - $\mathbb{I}$\\
+\textbf{Irrationale Zahlen} - $\mathbb{I}$\newline
 Es handelt sich hier um Zahlen, welche nicht mittels eines Buches dargestellt werden können.
-Zum Beispiel ist die Kreiszahl $\pi$ (Umfang / Durchmesser) 3,141592654… eine irrationale Zahl.
+Zum Beispiel ist die Kreiszahl $\pi$ (Umfang / Durchmesser) 3,141592654…, oder die Eulersche Zahl $\mathrm{e}$ 2,718281828… eine irrationale Zahl.
 Man erkennt, dass diese Art von Zahlen niemals periodisch werden.
 Ebenso gilt, dass alle Wurzeln natürlicher Zahlen, welche keine natürlichen Zahlen ergeben, ebenfalls irrational sind ($\sqrt{5}$).
 
-\textbf{Reelle Zahlen} - $\mathbb{R}$\\
-Diese setzen sich aus den rationalen und den irrationalen Zahlen zusammen (vgl. \cite[7--9]{Engel2017}).
+\textbf{Reelle Zahlen} - $\mathbb{R}$\newline
+Diese setzen sich aus den rationalen und den irrationalen Zahlen zusammen (vgl. \cite[7--9]{Engel2017} und \cite[5--6]{Houston2012}).
 
-Es gibt noch weitere Zahlen wie die imaginären Zahlen oder die komplexen Zahlen.
-Diese sind für die Arbeit nicht relevant und werden daher nicht näher ausgeführt.
+Es gibt noch weitere Zahlen wie die komplexen Zahlen - $\mathbb{C}$, welche sich mit der Existenz der Quadratwurzel beschäftigen, oder die  imaginären Zahlen.
+Diese sind für die Arbeit jedoch nicht relevant und werden daher nicht näher ausgeführt.
 
 \subsection{Teilbarkeit und Vielfaches}\label{Teilbarkeit und Vielfaches}
 Um uns dieser Thematik widmen zu können müssen wir ein paar wenige Parameter im Vorfeld definieren.\newline
@@ -262,7 +390,7 @@ Wir beschreiben $k$ als einen \textbf{Teiler} von $n$, und die Variable $n$ als 
 Wir schreiben $k\cdot{m} = n$. Ein solches wird dann als $k \mid n$ beschrieben.\newline
 Als Beispiel können wir hier $4 \mid 8$ anführen, denn $4 \cdot 2 = 8$.
 Umgekehrt können wir festhalten, dass $5 \cdot 2 \neq 8$. \newline
-Sofern $k \in \mathbb{Z}$ ist, dann besitzt dieser Therm auf jeden Fall 1, -1, $k$ und $-k$ als Teiler.
+Sofern $k \in \mathbb{Z}$ ist, dann besitzt dieser Term auf jeden Fall 1, -1, $k$ und $-k$ als Teiler.
 Demnach ist hier sehr gut zu erkennen, dass jede ganze Zahl mindestens 4 Teiler hat
 \begin{center}
 $k = k \cdot 1 = 1 \cdot k$\\
@@ -287,7 +415,21 @@ $n + m = k \cdot x + k \cdot y = k \cdot (n + m)$\\
 $n - m = k \cdot x - k \cdot y = k \cdot (n - m)$\\
 $n \cdot m = (kx) \cdot (ky) = k \cdot (x \cdot k \cdot y)$.
 \end{center}
-Da nun $n + m$, $n - m$ und $x \cdot k \cdot y$ ganze Zahlen sind, ist $k$ nach der Teilbarkeitsregel ein Teiler von $n + m$, $n - m$ und $n \cdot m$ (vgl. \cite[13--15]{RempeGillen2009}).
+Da nun $n + m$, $n - m$ und $x \cdot k \cdot y$ ganze Zahlen sind, ist $k$ nach der Teilbarkeitsregel ein Teiler von $n + m$, $n - m$ und $n \cdot m$ (vgl. \cite[13--15]{RempeGillen2009}).\newline
+Um die Teilbarkeitsregel noch besser zu verstehen möchte ich weiters ein Negativbeispiel \label{Negativbeispiel} anführen.
+Dieses soll einen häufig begangenen Fehler veranschaulichen und aufklären.
+Es soll die Frage geklärt werden, ob $k$ ein Teiler von $n$ \textit{oder} $m$ ist, wenn $k \mid n \cdot m$ gilt?\newline
+\textbf{Beispiel:} Gegeben ist folgendes: $k = 6$, $n = 4$, $m = 9$ und setzen nun in $k \mid n \cdot m$ ein.
+\begin{center}
+$6 \mid 4 \cdot 9$\\
+$6 \mid 36$
+\end{center}
+Nach dieser Betrachtung ist die Aussage $6 \mid 36$ wahr.
+Dies Beantwortet aber nicht die oben angeführte Vermutung ob 6 ein Teiler von 4 \textit{oder} von 9 ist.
+Die Antwort ist leicht zu erkennen.
+Nein, es ist nicht wahr, da $6 \nmid 4$ und $6 \nmid 9$.\newline
+Doch was genau passiert hier? Wie haben $n = 4 = 2 \cdot 2$ und $m = 9 = 3 \cdot 3$, also $n \cdot m = (2 \cdot 2 \cdot 3 \cdot 3) = 2 \cdot (2 \cdot 3) \cdot 3$.
+Man erkennt, dass der Teiler 6 teilweise aus $n$ und teilweise aus $m$ gebildet wird (vgl. \cite[235]{Houston2012}). Auf dieses Beispiel werde ich im nächsten Abschnitt \ref{Der Euklidische Algorithmus} nochmals eingehen.
 \paragraph{Definition - Größter gemeinsamer Teiler - ggT:}
 Den größten gemeinsamen Teiler - ggT für $n$ und $m$ für zwei ganze Zahlen $n, m\in \mathbb{Z}$ nennt man
 \begin{center}
@@ -298,14 +440,8 @@ Das kleinste gemeinsame Vielfache - kgV für $n$ und $m$ für zwei ganze Zahlen 
 \begin{center}
 $\sqcup(n, m)$ := min \{$k \mid n$ und $m$ teilen $k\}$.
 \end{center}
-\paragraph{Definition - Teilerfremd:}
-Zwei ganze Zahlen $n, m$ werden als \textbf{teilerfremd} bezeichnet, wenn ggT($n, m$) = 1 ist.
-Dies bedeutet, dass $n$ und $m$ außer 1 keinen weiteren positiven gemeinsamen Teiler besitzen.
-\begin{flushright}
-$\Box$
-\end{flushright}
-\newpage
 
+\newpage
 \subsection{Der Euklidische Algorithmus}\label{Der Euklidische Algorithmus}
 Wir haben nun einiges über den ggT in Erfahrung bringen können und ich möchte auch mit der Thematik weiter machen und auf den Euklidischen Algorithmus näher eingehen.
 Dieser beschäftigt sich ebenfalls mit der Findung des ggTs.\newline
@@ -331,7 +467,7 @@ Es seien $a, b, m \in \mathbb{Z}$ beliebig. Dann ist jeder gemeinsame Teiler von
 Insbesondere gilt ggT($a, b$) = ggT($a, b + m \cdot a$).\newline
 \autocite[17]{RempeGillen2009}\newpage
 \end{quote}
-\textbf{Der Euklidische Algorithmus kann nun wie folgt verstanden werden:}\newline
+\textbf{Aufbau des Euklidischen Algorithmus:}\newline
 Gegeben ist $a, b \in \mathbb{N}$ mit $a \ge b \ge 1$.
 Weiters bestimmen wir das $a_0 := a$ und $a_1 := b$.
 Hiermit werden wir Divisionsketten mit Rest bilden.
@@ -347,7 +483,7 @@ Somit gilt: $a_k > 0$, $a_{k+1} = 0$.\newline
 Im Ergebnis erkennt man, dass die Zahl $a_k$ der ggT von $a$ und $b$ ist.
 
 Um dies zu veranschaulichen folgen nun 2 Beispiele mit etwas größeren Zahlen:
-\begin{align}
+\begin{align}\setcounter{equation}{0}
 a = 138.777 &,\ b = 16.855       & a = 2.250 &,\ b = 765 \\
 138.777 &= 8 \cdot 16.855 + 3937 & 2.250 &= 2 \cdot 765 + 720 \\
 16.855  &= 4 \cdot 3.937 + 1.107 & 765   &= 1 \cdot 720 + 45 \\
@@ -370,27 +506,72 @@ Auf der linken Seite der beiden Beispiele erhält man im Ergebnis als\\
 ggT ($138.777, 16.855$) nach der zehnten Division die Zahl 1. Auf der rechten Seite ist der ggT ($2.250, 765$) die Zahl 45.
 Betrachtet man nun diese Divisionkette von oben nach unten so kann man schlussfolgern, dass für jeden gemeinsamen Teiler $x$ von $a_0$ und $a_1$ hintereinander $x \mid a_0$, $x \mid a_1$, $x \mid a_2$, ..., $x \mid a_k$.\newline
 Daher erfüllt $a_k$ die Definition ein ggT zu sein $\to$ $a_k$ = ggT($a_0,a_1$) = ggT($a, b$) (vgl. \cite[58--59]{Remmert1995}).
+\begin{flushright}
+$\Box$
+\end{flushright}
+
+\newpage
+\textbf{Das Lemma von Euklid}\newline
+Sehen wir uns nun nochmals das Negativbeispiel auf Seite \pageref{Negativbeispiel} an.
+In diesem konnten wir eine nicht wahre Vermutung erkennen, dass $k \nmid n$ und $k \nmid m$ sofern $k \mid n \cdot m$ gilt.
+Wir können aber eine weitere Bedingung hinzufügen um einen wahren Satz zu erhalten.
+Dieser Satz ist als das Lemma von Euklid bekannt, wobei es sich hier eigentlich um ein Korollar handelt.\newline
+
+\begin{corollar} Lemma von Euklid\newline
+\textit{Es seien $n$, $a$ und $b$ natürliche Zahlen.\newline
+Wenn $n \mid a \cdot b$ und $\sqcap(n,a)$ = 1 gilt, dann folgt $n \mid b$.}
+\end{corollar}
+
+\begin{quote}
+\small
+\textbf{Beweis:} Da ggT($n, a$) = 1 gilt, gibt es ganze Zahlen $k$ und $l$ mit $kn + la = 1$.
+Daraus folgt $knb + lab = b$.
+Offensichtlich gilt $n \mid knb$.
+Außerdem gilt $n \mid ab$, also auch $n \mid lab$.\newline
+Daraus erhalten wir $n \mid (knb + lab)$, also $n \mid b$.\newline
+\autocite[246--247]{Houston2012}
+\begin{flushright}
+$\Box$
+\end{flushright}
+\end{quote}
+Das Lemma von Euklid ist mathematisch dermaßen essentiell, dass dieses eine eigene Definition gewidmet wurde.
+\paragraph{Definition - Teilerfremd:}
+Zwei ganze Zahlen werden als \textbf{teilerfremd} oder \textbf{relativ prim} bezeichnet, wenn ihr $\sqcap(n, a)$ = 1 ist.
+
+Diese Definition bedeutet, dass $n$ und $a$ außer 1 keinen weiteren positiven gemeinsamen Teiler besitzen.
+
+Aus dem Lemma von Euklid kann auch noch ein weiterer Satz gebildet werden:
+\textit{Wenn $p$ eine Primzahl ist und $a \cdot b$ teilen kann, dann muss $p$ ein Teiler von $a$ oder von $b$ sein.}\newline
+Zur Veranschaulichung ein kleines Beispiel. Gegeben ist $p = 5$, $a = 3$ und $b = 10$.
+\begin{align}
+5 &\mid 3 \cdot 10\\
+5 &\mid 30\\
+5 &\nmid 3\\
+5 &\mid 10
+\end{align}
+(vgl. \cite[247]{Houston2012}).
+\newpage
 
 \section{Modulare Arithmetik}\label{Modulare Arithmetik}
-Ich werde bei den Grundlagen dieser Thematik genauer in die Tiefe gehen, um die Zusammenhänge im späteren Verlauf leichter fassen zu können. Durch gewisse Eigenschaften, welche die modulare Arithmetik mit sich bringt, konnten einige höherrangige Primzahltests entwickelt und implementiert werden. Von besonderen Interesse kann hier der \textit{Kleine Satz von Fermat} genannt werden, welcher im Kapitel \ref{Der Kleine Satz von Fermat} auf S. \pageref{Der Kleine Satz von Fermat} näher beschrieben wird.
+Ich werde bei den Grundlagen dieser Thematik genauer in die Tiefe gehen, um die Zusammenhänge im späteren Verlauf leichter fassen zu können. Durch gewisse Eigenschaften, welche die modulare Arithmetik mit sich bringt, konnten einige höherrangige Primzahltests entwickelt und implementiert werden. Von besonderen Interesse kann hier der \textit{Kleine Satz von Fermat} genannt werden, welcher im Kapitel \ref{Der Kleine Satz von Fermat} auf S. \pageref{Der Kleine Satz von Fermat} näher beschrieben wird, oder auch der \textit{Lucas Lehmer Test} aus Kapitel \ref{Mersenne-Primzahlen} auf S.\pageref{Definition (Lucas-Test)}.
 
 \subsection{Allgemeines}\label{Allgemeines}
 Wichtig ist hier im ersten Schritt zu verstehen, dass die modulare Arithmetik eine differenziere Betrachtungsweise der Additions- bzw. Multiplikationsrechnung darstellt.
-Für eine leichtere Auffassung ist die beste Methode sich eine Uhr und deren Ziffernblatt oder den Tag mit seinen 24 Stunden in einem Kreis vorzustellen.
-
 \begin{figure}[h]
  \centering
  \includegraphics{Uhr}
  \caption{Tageszeiten im Vergleich mit kongruenten Zahlen}
  \label{fig:Tageszeiten im Vergleich mit kongruenten Zahlen}
- \cite[298]{Meinel2011}
+ \autocite[298]{Meinel2011}
 \end{figure}
+Für eine leichtere Auffassung ist die beste Methode sich eine Uhr und deren Ziffernblatt oder den Tag mit seinen 24 Stunden in einem Kreis vorzustellen.
 
 Möchte man zum Beispiel wissen wie spät es in 55 Stunden sein wird wenn es jetzt 16 Uhr ist, wäre eine klassische Addition von $16+55=\sage{16+55}$ inkorrekt, da ein klassisches Ziffernblatt nur 12 Zahlen und der Tag bekannterweise nur 24 Stunden hat.
 Wobei in dieser Betrachtung aber gilt $24=0$.
 Man kann nun das Ergebnis 71 durch 24 Stunden dividieren und enthält $2,958333333$.
 Weiters wird der Rest $0,958333333$ nochmals mit 24 multipliziert.
 Somit gelangt man zur korrekten Lösung, dass es in 55 Stunden \textbf{23 Uhr} sein wird.
+Eine andere und noch leichter zu greifende Berechnung wäre $71 - 24 \cdot 2 = 23$.
 
 \subsection{Mathematische Darstellung}\label{Mathematische Darstellung}
 Bevor ich dies noch mathematisch darstelle und beweise möchte ich noch grundlegende Bedingungen wiederholen:
@@ -404,48 +585,49 @@ Bevor ich dies noch mathematisch darstelle und beweise möchte ich noch grundleg
     \item Das Produkt von zwei ungeraden Zahlen ist stets ungerade $\rightarrow$ $3 \cdot 3 = 9$.
 \end{itemize}
 
-Um diese Bedingungen per Definition festzuhalten formulieren wir:\\
-\textbf{Kongruenz:} Für $\mathbb{N}$ gilt $n>1$.
-$a$ und $b$ sind $\mathbb{Z}$, welche beim Teilen mit $n$ den selben Rest haben.
+Um diese Bedingungen per Definition festzuhalten formulieren wir:
+\begin{defi}\textbf{Kongruenz} Für $\mathbb{N}$ gilt $n>1$.
+$a$ und $b$ sind $\mathbb{Z}$, welche beim Teilen mit $n$ den selben Rest $r$ haben.
+Die zwei Zahlen $a, b \in \mathbb{Z}$ werden als restgleich bezeichnet wenn $a$ mod $n$ = $b$ mod $n$.
 Somit erhalten wir $a\equiv b$ (mod $n$). Sprich: \textbf{$a$ ist kongruent zu $b$ modulo $n$}.
 Die Differenz dieser Zahlen ist ein Vielfaches von $n$, wenn $a-b$ ein Vielfaches von $n$ ist.
+\end{defi}
 
-Anhand der soeben definierten Bedingung stellt sich nun die Frage ob die Differenz von $a$ und $b$ durch $n$ teilbar ist?
-Hierzu gilt allgemein, dass es für das modulare Rechnen gewisse Regeln gibt, welche unbedingt einzuhalten sind:
-\begin{itemize}
-    \item Gegeben sei: $n>1$ und $a, b, c,$ und $d$ beliebige $\mathbb{Z}$.
-    \item Wenn $a\equiv b$ (mod $n$) und $a\equiv c$ (mod $n$), dann muss auch $b\equiv c$ (mod $n$) sein.
-    \item Ist $a\equiv b$ (mod $n$) und $c\equiv d$ (mod $n$), dann sind auch $a + c\equiv b + d$ (mod $n$), $a - c\equiv b - d$ (mod $n$) und $a \cdot c\equiv b \cdot d$ (mod $n$).
-    \item Zu guter letzt gilt auch: Wenn $a\equiv b$ (mod $n$), so ist auch $a^k\equiv b^k$ (mod $n$) für alle $k$ $\in$ $\mathbb{N}$
-\end{itemize}
-(vgl. \cite[66]{RempeGillen2009}).
-\begin{flushright}
-$\Box$
-\end{flushright}
-
-
-Kongruent bedeutet umgangssprachlich:
-Innerhalb des vorgegebenen Systems in dem ich mich bewege und rechne sind es eigentlich immer die selben Zahlen.
+\newpage
+\begin{exkurs}[Kongruent]
+Kongruent bedeutet umgangssprachlich, dass innerhalb des vorgegebenen Systems in dem man sich bewegt und rechnet es sich eigentlich immer um die selben Zahlen handelt.
 Verwende ich statt $\equiv$ ein = erhalte ich im Grunde das selbe Ergebnis.
 Dies ist anhand der Abbildung \ref{fig:Tageszeiten im Vergleich mit kongruenten Zahlen} sehr gut ersichtlich.
 Hier wäre das $n$ in (mod $n$) zum Beispiel die Zahl 24, wobei wir uns in jener Menge von $\mathbb{Z}_{24}$ = $\{0, 1, 2, ..., 22, 23\}$ bewegen.
 Sollten wir nun als Ergebnis die Zahl 44 erhalten, wäre dies keine Zahl in unserem Zahlensystem.
-Aber man erkennt in Abbildung \ref{fig:Tageszeiten im Vergleich mit kongruenten Zahlen} sehr gut, dass die Zahl 44 gleichbedeutend mit der Zahl 20 ist.
+Aber man erkennt in Abbildung \ref{fig:Tageszeiten im Vergleich mit kongruenten Zahlen}, dass die Zahl 44 gleichbedeutend mit der Zahl 20 ist.
 Wenn wir uns das einführende Beispiel dieses Kapitels mit der Zahl 23 ansehen heißt dies, dass diese Zahl gleichbedeutend mit der Zahl 71 ist.
 Dies stimmt auch mit unserem Ergebnis überein.
 Weiters zählt die Zahl 23 aber auch für die Zahlen 47, -1 und -25.
 Egal ob positiv oder negativ, die Spirale könnte bis ins unendliche weitergeführt werden (vgl. \cite[298--299]{Meinel2011}).
+\end{exkurs}
 
-Ich werde dies anhand eines Zahlenbeispiels beweisen:\\
-Gegeben ist folgendes: a = 3, b = 24, c = 5, d = 12,  n = 7\\
-n = 7 bedeutet, dass wir uns in einem Zahlenkreis von \{1 ,2, ..., 6, 7\} bewegen.
+Anhand der soeben definierten Bedingung stellt sich nun die Frage ob die Differenz von $a$ und $b$ durch $n$ teilbar ist?
+Hierzu gilt allgemein, dass es für das modulare Rechnen gewisse Regeln/Gesetze gibt, welche unbedingt einzuhalten sind:
+\begin{itemize}
+    \item Gegeben sei: $n>1$ und $a, b, c,$ und $d$ beliebige $\mathbb{Z}$.
+    \item Wenn $a\equiv b$ (mod $n$) und $a\equiv c$ (mod $n$), dann muss auch $b\equiv c$ (mod $n$) sein.
+    \item Ist $a\equiv b$ (mod $n$) und $c\equiv d$ (mod $n$), dann sind auch $a + c\equiv b + d$ (mod $n$), $a - c\equiv b - d$ (mod $n$) sowie $a \cdot c\equiv b \cdot d$ (mod $n$).
+    \item Zu guter letzt gilt auch: Wenn $a\equiv b$ (mod $n$), so ist auch $a^k\equiv b^k$ (mod $n$) für alle $k$ $\in$ $\mathbb{N}$
+\end{itemize}
+(vgl. \cite[66]{RempeGillen2009}).
+
+\newpage
+Wir werden dies anhand eines Zahlenbeispiels beweisen.
+\begin{beweis}Gegeben ist folgendes: a = 3, b = 24, c = 5, d = 12,  n = 7\\
+n = 7 bedeutet, dass wir uns in einem Zahlenkreis von \{1 , 2, ..., 6, 7\} bewegen.
 \begin{align}\setcounter{equation}{0}
-a + c  &= b + d                      & a      &\equiv b\ (mod\ n)          & c      &\equiv d\ (mod\ n)     \\
-3 + 5  &= 24 + 12                    & 3      &\equiv 24\ (mod\ 7)         & 5      &\equiv 12\ (mod\ 7)    \\
-8      &= 36                         & 24 - 3 &= 21 \div 7 = \uuline{3}    & 12 - 5 &=7 \div 7 = \uuline{1} \\
-a + c  &\equiv b + c\ (mod\ n)       &                                     &                                \\ 
-8      &\equiv 36\ (mod\ 7)          &                                     &                                \\
-36 - 8 &= 28 \div 7 = \uuline{4}     &                                     &
+a + c  &= b + d                  & a      &\equiv b\ (mod\ n)       & c      &\equiv d\ (mod\ n)     \\
+3 + 5  &= 24 + 12                & 3      &\equiv 24\ (mod\ 7)      & 5      &\equiv 12\ (mod\ 7)    \\
+8      &= 36                     & 24 - 3 &= 21 \div 7 = \textbf{3} & 12 - 5 &=7 \div 7 = \textbf{1} \\
+a + c  &\equiv b + c\ (mod\ n)   &                                  &                                \\ 
+8      &\equiv 36\ (mod\ 7)      &                                  &                                \\
+36 - 8 &= 28 \div 7 = \textbf{4} &                                  &
 \end{align}
 Im Ergebnis der ersten Kalkulation von $a + c \equiv b + d$ (mod $n$) erhält man die Zahl 4.
 Diese Zahl werde ich mit der Variable $x$ betiteln.
@@ -470,7 +652,12 @@ Der Rest $3 + 5$ ist hier von größerer Bedeutung und wir können im Ergebnis w
 3 + 5 &= 24 + 12\ oder \\
 a + c &= b + d
 \end{align}
+\begin{flushright}
+$\Box$
+\end{flushright}
+\end{beweis}
 
+\newpage
 \subsection{Restklassenringe von ganzen Zahlen}\label{Restklassenringe von ganzen Zahlen}
 Die Restklassenringe $\mathbb{Z}/n\mathbb{Z}$ bilden die Grundlage für alle essentiellen Eindrücke der arithmetischen Zahlentheorie der Zahlen von $\mathbb{Z}$.
 Beim Rechnen mit Restklassenringen bedeutet $a \equiv b$ (mod $n$) das $a$ und $b$ in derselben Nebenklasse der Untergruppe von $n\mathbb{Z}$ von $\mathbb{Z}$ liegen.
@@ -483,13 +670,13 @@ Mathematische Darstellung:
 \begin{center}
 $R_n = \{r \in \mathbb{Z}; 0 \leq r \le n\}$
 \end{center}
-Die bedeutet, dass man hiermit ein Vertretersystem der Restklassen modulo $n$ hat und das die Anzahl der Restklassen modulo $n$ gleich $n$ ist (vgl. \cite[37--38]{Leutbecher2013}).
+Dies bedeutet, dass man hiermit ein Vertretersystem der Restklassen modulo $n$ hat und das die Anzahl der Restklassen modulo $n$ gleich $n$ ist (vgl. \cite[37--38]{Leutbecher2013}).
 Vereinfacht könnte man sagen, dass $\mathbb{Z}/n\mathbb{Z}$ die Menge der Reste bei der Division durch $n$ darstellt.\newline
 Als Bespiel möchte ich folgendes anführen:\newline
 Gegeben sei $\mathbb{Z}/n \mathbb{Z}$ für $n = 7$.\newline
 Somit erhält man folgende Zahlenreihe \{0, 1, 2, 3, 4, 5, 6\}.\newline
 Heißt: Wenn ich eine Zahl $\mathbb{Z}$ durch 7 teile habe ich mögliche Reste von 0 bis 6.
-Es kann aber nicht der Rest 8 herauskommen, da $8 \div 7 = 1 + \textbf{1 Rest}$.
+Es kann aber nicht der Rest 8 herauskommen, da (14) $8 \div 7 = 1 + \textbf{1 Rest}$.
 \begin{align}
 3 + 5      &= \textbf{1} \Rightarrow 3 + 5 = 8  \div 7 = 1 + \textbf{1} \\
 4 + 15     &= \textbf{5} \Rightarrow 4 + 15 = 8  \div 7 = 2 + \textbf{5} \\
@@ -507,9 +694,9 @@ Die Zahl 5 ist z.B. ein Vertreter der natürlichen Zahlen: 12, 19, 26, 33, 40, .
 Man kann solche Zahlensysteme auch anhand von Tabellen darstellen.
 Dies werde ich zuerst mit der Addition und anschließend mit der Multiplikation veranschaulichen.
 \begin{table}[h]\begin{center}
-\begin{tabular}{c|c|c|c|c|c|c|c}
+\begin{tabular}{c||c|c|c|c|c|c|c}
 \textbf{+} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
-\hline
+\hline\hline
 \textbf{0} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
 \hline
 \textbf{1} & 1 & 2 & 3 & 4 & 5 & 6 & 0 \\
@@ -529,9 +716,9 @@ Dies werde ich zuerst mit der Addition und anschließend mit der Multiplikation 
 \end{table}
 
 \begin{table}[h]\begin{center}
-\begin{tabular}{c|c|c|c|c|c|c|c}
+\begin{tabular}{c||c|c|c|c|c|c|c}
 \textbf{$\times$} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
-\hline
+\hline\hline
 \textbf{0} & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
 \hline
 \textbf{1} & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
@@ -550,11 +737,18 @@ Dies werde ich zuerst mit der Addition und anschließend mit der Multiplikation 
 \label{tab:Restklassenringe der Multiplikation}
 \end{table}
 
-Einerseits erkennt man in der Tabelle \ref{tab:Restklassenringe der Addition}, dass es nur maximal 49 mögliche Summen gibt.
-Zum Anderen sieht man auf einen Blick, dass z.B. die Addition $4 + 5$ den Rest 2 ergibt.\newpage
-Wie in Tabelle \ref{tab:Restklassenringe der Multiplikation} ersichtlich gibt es wieder nur maximal 49 mögliche Produkte.
-Versucht man nun das korrekte Ergebnis aus $4 \cdot 5$ herauszulesen wird man schnell bei der Zahl 6 fündig.
+Einerseits erkennt man in Tabelle \ref{tab:Restklassenringe der Addition}, dass es nur maximal 49 mögliche Summen gibt.
+Zum Anderen sieht man auf einen Blick, dass z.B. die Addition $4 + 5$ den Rest 2 ergibt.
 
+Wie in Tabelle \ref{tab:Restklassenringe der Multiplikation} ersichtlich gibt es wieder nur maximal 49 mögliche Produkte.
+Versucht man nun das korrekte Ergebnis aus $4 \cdot 5$ herauszulesen wird man schnell bei der Zahl 6 fündig (vgl. \cite[68]{RempeGillen2009}).
+
+Die komplizierteste Form ist das modulare Rechnen mit Potenzen.
+Dies werden wir uns mit dem nächsten Absatz ansehen, da es für die Primzahltestungen äußerst wichtig ist.
+Für einen einfachen und guten Überblick werden wir dies wieder in einer Tabelle darstellen.
+%Hier fehlt noch die tabularische Darstellung!!
+
+\newpage
 \subsection{Teilbarkeitsregeln in der modularen Arithmetik}
 Für die weiterführenden Beispiele und zur leichteren Darstellung werden wir uns in "modulo 9"\ bewegen.
 
@@ -594,13 +788,13 @@ Ob dies nun der Richtigkeit entspricht können wir durch folgende Berechnung fes
 9652 - 22 &= 9640 \div 9 = 1060
 \end{align}
 Durch das Wissen der modularen Arithmetik muss die Teilbarkeitsregel stimmen.
-Zum einen erkennt man, dass die Quersumme von 22 4 ist.
-Desweiteren, dass  durch das oben angeführte Beispiel zwei Dinge ersichtlich sind:
+Zum einen erkennt man, dass 4 die Quersumme von 22 ist.
+Außerdem werden durch das das oben angeführte Beispiel zwei Dinge ersichtlich:
 \begin{enumerate}
     \item 9652 ist nicht durch 9 teilbar, da 4 nicht durch 9 teilbar ist und
     \item wenn man 9652 durch 9 teilt ist der Rest 4.
 \end{enumerate}
-%Hier muss ich unbedingt das Buch ausborgen um mir noch mehr Input zu holen. Das hier geschrieben ist ausschließlich aus YouTube und das wird bestimmt zu wenig sein!
+%Hier muss ich unbedingt das Buch ausborgen um mir noch mehr Input zu holen. Das hier geschrieben ist kommt ausschließlich aus YouTube und das wird bestimmt zu wenig sein!
 
 \newpage
 \section{Primzahlen}\label{Primzahlen}
@@ -626,35 +820,39 @@ Dieser Mann lebte aber etwa 100 Jahre vor der Geburt Euklides.
 Welche dieser Theorien nun stimmt kann ich nicht beurteilen ist auch nicht Bestandteil dieser Arbeit.
 Fakt ist jedoch, dass diese Werke maßgebend sind und über 2000 Jahre deren Richtigkeit nicht angezweifelt wurden.
 Das Werk "Die Elemente"\ besteht aus 13 Büchern.
-Unter anderem handelt das siebente Buch von der Zahlentheorie und beinhaltet den \textit{Euklidischen Algorithmus}, welche zur Bestimmung des größten gemeinsamen Teilers (ggT) zweier Zahlen dient (Biografie von Euklid).\\
+Unter anderem handelt das siebente Buch von der Zahlentheorie und beinhaltet den \textit{Euklidischen Algorithmus}, welche zur Bestimmung des größten gemeinsamen Teilers (ggT) zweier Zahlen dient (Biografie von Euklid).
+
 Genau hier möchte ich einen sanften Übergang in die Zahlentheorie einleiten.
 Diese beschäftigt sich mit den Eigenschaften von ganzen Zahlen und zerlegt unter anderem eine Zahl in Primfaktoren.
 Es ist derzeit immer noch ein Problem Primzahlen überhaupt zu erkennen. In dieser Disziplin der Mathematik gibt es eine Vielzahl an Problemen, welche sich leicht formulieren lassen.
 Diese aber zu lösen stellt sich bis heute noch als außerordentlich schwierig dar (vgl. \cite[13]{Pomerance1996}).
 
 \subsection{Primzahlen per Definition}\label{Primzahlen per Definition}
-\textbf{Primzahlen} - $\mathbb{P}$ - \{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, ..., pn\}.\\
-Die Definitionen von Primzahlen lauten wie folgt:\\
-\hspace*{5mm}\textbf{Primzahlen sind natürliche Zahlen, die exakt zwei Teiler besitzen.}\\
-\hspace*{5mm}\textbf{Primzahlen sind natürliche Zahlen, welche genau durch 2 verschiedene natürliche Zahlen geteilt werden können.}
+\textbf{Primzahlen} - $\mathbb{P}$ - \{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, ..., pn\}.\newline
+Die Definitionen von Primzahlen lauten wie folgt:
+\begin{defi}Primzahlen sind natürliche Zahlen, die exakt zwei Teiler besitzen.\end{defi}
+\begin{defi}Primzahlen sind natürliche Zahlen, welche genau durch 2 verschiedene natürliche Zahlen geteilt werden können.\end{defi}
 
 Nach diesen Definitionen ist eine Zahl dann eine Primzahl wenn diese durch 1 und sich selbst ohne Rest teilbar ist.
-\paragraph{Exkurs zu den Zahlen 0 und 1:}Die Zahlen 0 und 1 sind keine Primzahlen!\\
+
+\begin{exkurs}[Exkurs zu den Zahlen 0 und 1]
+Die Zahlen 0 und 1 sind keine Primzahlen!
 Die Zahl 0 kann nicht durch sich selbst geteilt werden und daher spricht sie gegen diese Definition.
-Wie schon Anfangs im Kapitel \ref{Eingliederung von Zahlen} bei der Definition von $\mathbb{Z}$ beschrieben ist die Berechnung 0:0 nicht zulässig.\\
+Wie schon Anfangs im Kapitel \ref{Eingliederung von Zahlen} bei der Definition von $\mathbb{Z}$ beschrieben ist die Berechnung 0:0 nicht zulässig.\newline
 Die Zahl 1 war unter Mathematikern lange als Primzahl anerkannt, da sie der oben genannten Definition durchaus entspricht.
 Doch wurde sie aufgrund von mehreren Problemen mit der Zeit aus der Reihe der Primzahlen entfernt.
 Zum einen erfüllt sie zwar das Kriterium der Teilbarkeit durch 1 und sich selbst, doch hat die Zahl 1 nur einen Teiler, wohingegen alle anderen Primzahlen zwei Teiler besitzen.
 Auch führt diese Zahl bei der Primfaktorzerlegung zu Problemen, welche weiter unten angeführt werden.
+\end{exkurs}
 
-\subsection{Welche Primzahlen gibt es?}\label{Welche Primzahlen gibt es?}
+\subsection{Welche Arten von Primzahlen gibt es?}\label{Welche Arten von Primzahlen gibt es?}
 Eine Aufzählung der unterschiedlichsten Primzahlen:
 \begin{itemize}
 \item [a]\underline{Mersenne-Primzahlen:} Diese haben die Form $2^{n}-1$ (aber nicht jede Zahl für n liefert  eine Mersenne-Primzahl, so ergibt z.B. n = 4 die Zahl 15, die ja keine Primzahl ist).
 Die ersten Mersenne-Primzahlen lauten: 3, 7, 31, 127, 8.191, 131.071, 524.287, 2.147.483.647, …
 \item [b]\underline{Megaprimzahlen:} Diese sind Primzahlen mit mindestens 1.000.000 Stellen in ihrer dezimalen Darstellung.
-Anmerkung: Die größte im Januar 2017 bekannte Primzahl hat 22.338.618 Stellen und kann so berechnet werden: $2^{74.207.281}-1$.
-\item [c]Fermat-Primzahlen
+Anmerkung: Die größte im Dezember 2018 bekannte Primzahl hat 24.862.048 Stellen und kann so berechnet werden: $2^{82.589.933}-1$.
+\item [c]Fermat-Primzahlen, mit der Form $p = 2^n + 1$
 \item [d]Wilson-Primzahlen
 \item [e]Kubanische-Primzahlen
 \item [f]Lucas-Primzahlen
@@ -679,8 +877,8 @@ Ich gehe hier näher auf das \textbf{Sieb des Eratosthenes} ein.
 Dieses sticht mit seiner Einfachheit heraus.
 Selbst ein Kind, welches ein gewisses Maß an mathematischen Wissen besitzt kann diesen Test sehr leicht durchführen.
 Er wurde im 3. Jahrhundert v. Chr. mit dem Grundgedanken entwickelt um für eine gewisse Bandbreite an Zahlen alle Primzahlen heraus zu filtern.
-Anhand des folgenden Beispiels werde ich dies näher erörtern:\\
-Für die unten stehenden Zahlen 1 bis $N$ ($1-151$) in der Tabelle \ref{tab:Sieb des Eratosthenes} möchte ich nun alle enthaltenen Primzahlen herausfinden.
+Anhand des folgenden Beispiels werde ich dies näher erörtern:\newline
+Für die unten stehenden Zahlen 1 bis $N$ ($1-151$) in der Tabelle \ref{tab:Sieb des Eratosthenes} möchten wir nun alle enthaltenen Primzahlen herausfinden.
 Wie schon anfangs des Kapitels erwähnt wird die Zahl 1 nicht als Primzahl gewertet und daher wird diese in der Tabelle weggelassen und die Zahlenfolge beginnt mit der Zahl 2.
 Um die Arbeit weiter zu erleichtern werden alle ungeraden und geraden Zahlen untereinander aufgeschrieben.
 
@@ -739,31 +937,29 @@ Unter Berücksichtigung von einigen Optimierungen, auf welche ich hier nicht ein
 \[\sum_{p\le N} \frac{N}p = N ln ln N + O(N)\]
 (vgl. \cite[121]{Crandall2005}).
 
-Um dieses Beispiel abzuschließen ergibt sich durch das Sieb folgende Reihe an Primzahlen $\mathbb{P}$: $\sage{prime_range(152)}$.\\
+Um dieses Beispiel abzuschließen ergibt sich durch das Sieb folgende Reihe an Primzahlen $\mathbb{P}$: [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151]. \newline
 Für kleine Zahlen ist dieses Siebverfahren durchaus geeignet, doch auch hier lässt sich erkennen, dass es für große Zahlen nicht praktikabel ist.
 
-Es gibt natürlich weitere Primzahltestungen:
+Es gibt natürlich noch weitere Primzahltestungen:
 \begin{itemize}
     \item Die einfachste von allen ist die \textit{Probedivision}.
     Hier wird durch eine simple Division versucht ob eine Zahl durch eine weitere Zahl, außer 1 und sich selbst, teilbar ist.
     \item Eine verbesserte Version des Siebes von Eratosthenes ist das \textit{Sieb von Atkin}.
     Dieses hat einen schnelleren und moderneren Algorithmus um Primzahlen zu benennen.
-    \item Auf dem \textbf{Kleinen Satz von Fermat} beruht die \textit{fermatsche Primzahltestung}.
+    \item Auf dem \textbf{Kleinen Satz von Fermat} beruht die \textit{fermat'sche Primzahltestung}.
     Auf diesen Satz beruht aber auch unter anderem der
-    \item \textit{Lucas-Lehmer-Test}, welcher zur Prüfung von Mersenne-Primzahlen dient.
+    \item \textit{Lucas-Lehmer-Test}, zur Prüfung von Mersenne-Primzahlen.
     Auf diesen Test werde ich im Kapitel \ref{Mersenne-Primzahlen} genauer eingehen.
     \item Eine substanzielle Modifizierung vom kleinen fermatschen Satz ist der \textit{APRCL-Test}.
     Dieser wurde 1980 von 5 Mathematikern ent- und weiterentwickelt.
 \end{itemize}
 
-\subsection{Der Kleine Satz von Fermat}\label{Der Kleine Satz von Fermat}
-%Hier fehlt mir noch alles!!
-
+\subsection{Wieviele Primzahlen gibt es?}
 Um die Existenz von unendlich vielen Primzahlen zu beweisen wurden unterschiedliche Theorien und mathematische Formeln aufgestellt.
-Der womöglich wichtigste Beweis “Beweis von Euklid” wird in dieser Arbeit im nächsten Abschnitt \ref{Beweis von Euklid} angeführt.
-Es gibt noch mehrere Beweise doch können diese hier nicht alle besprochen werden und würde den Rahmen sprengen.
+Der womöglich wichtigste Beweis “Beweis von Euklid” wird in diesem Kapitel im Abschnitt \ref{Beweis von Euklid} angeführt. Desweiteren werde ich den “Beweis von Euler” im Abschnitt \ref{Beweis von Euler} erörtern, da dieser für weitere Beweise durchaus relevant ist.
+Es gibt noch andere Beweise doch können diese hier nicht alle besprochen werden und würden den Rahmen dieser Arbeit übertreffen.
 
-\subsection{Beweise für die Existenz von Primzahlen}\label{Beweise für die Existenz von Primzahlen}
+\subsubsection{Beweise für die Existenz von Primzahlen}\label{Beweise für die Existenz von Primzahlen}
 Die folgende Zahlenreihe kann vermutlich bis ins unendliche weitergeführt werden \{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, …, pn\}.
 So ist die Zahl 5 nur durch 1 und sich selbst (5) teilbar.
 Die Zahl 1 ist keine Primzahl, da diese nur einen Teiler besitzt (vgl. Engel 2017: 86).
@@ -782,132 +978,441 @@ Dieses Vorgehen der Aufteilung in die kleinsten Bestandteile einer Zahl nennt ma
 Bei dieser Zerlegung wird die jeweilige Zahl durch die kleinst mögliche Primzahl geteilt bis im Ergebnis kein Rest über bleibt.
 Mit dem Ergebnis kann weiter gerechnet und dividiert werden bis schlussendlich keine weitere Teilung der Zahl mehr möglich ist.
 Hier erkennt man, dass die Produkte eindeutig sind.
-Es gibt keine weitere Zerlegungen der Zahlen 48, 55 oder 153 (vgl. Beweis, dass es unendlich viele Primzahlen gibt). 
-\paragraph{Exkurs zur Faktorisierung:}Da hier die Primfaktorzerlegung in Kürze angesprochen wurde möchte ich einen kurzen Ausflug zur Faktorisierung ermöglichen.
-Im späteren Verlauf dieser Arbeit werde ich noch näher darauf eingehen und auch das Faktorisierungsproblem aufgreifen.\\
+Es gibt keine weitere Zerlegungen der Zahlen 48, 55 oder 153 (vgl. \cite{Hemmerich2020}).
+
+Mathematisch kann dies wie folgt dargestellt werden:
+\begin{satz}[Primfaktorzerlegung] Jedes $n \in \mathbb{N}$ kann in der Form
+\[n = 2^{n_2} \times 3^{n_3} \times 5^{n_5} \times 7^{n_7} \cdot\cdot\cdot = \prod_{p\ prim} p^{n_p}\]
+dargestellt werden, wobei $n_2$, $n_3$, $n_5$, $n_7$, ... $\in \mathbb{N}$ eindeutig bestimmt sind.
+\end{satz}
+
+\newpage
+\begin{exkurs}[Faktorisierung]Da hier die Primfaktorzerlegung in Kürze angesprochen wurde möchte ich einen kurzen Ausflug zur Faktorisierung ermöglichen.
+Im späteren Verlauf dieser Arbeit werde ich noch näher darauf eingehen und auch das Faktorisierungsproblem aufgreifen.\newline
 Die Zerlegung einer kleinen Zahl wie zum Beispiel der Zahl 153 stellt kein großes Problem dar und kann einfach mit einem Taschenrechner von statten gehen.
-Für große Zahlen jedoch bedarf es ausgeklügelte Programme und Algorithmen, welche allein mit einem Taschenrechner nicht mehr zu bewerkstelligen sind.\\
-Beispiele für die Primfaktorzerlegung einiger Mersenne Zahlen, welche noch vor der Erfindung von Computern herausgefunden wurden:\
+Für große Zahlen jedoch bedarf es ausgeklügelte Programme und Algorithmen, welche allein mit einem Taschenrechner nicht mehr zu bewerkstelligen sind.\newline
+Beispiele für die Primfaktorzerlegung einiger Mersenne Zahlen, welche noch vor der Erfindung von Computern herausgefunden wurden:
 \begin{center}
 $M_{59} = 2^{59}-1 = 179.951\times3.203.431.780.337$ $\rightarrow$ 1869 von Landry;\\
 $M_{67} = 2^{67}-1 = 193.707.721\times761.838.257.287$ $\rightarrow$ 1903 von Cole;\\
 $M_{73} = 2^{73}-1 = 439\times2.298.041\times9.361.973.132.609$ $\rightarrow$ 1856 von Clausen.\\
 \end{center}
-Weitere Beispiele der Faktorisierung aus der jüngeren Zeit:\
+Weitere Beispiele der Faktorisierung aus der jüngeren Zeit:
 \begin{center}
 $M_{113} = 2^{113}-1 = 3.391\times23.279\times65.993\times1.868.569\times1.066.818.132.868.207$ $\rightarrow$ 1856 von Reuschle den kleinsten Faktor \& 1947 die restlichen Fakroten von Lehmer;\\
 $M_{193} = 2^{193}-1 = 13.821.503\times61.654.440.233.248.340.616.559\times14.732.265.321.145.317.331.353.282.383$ $\rightarrow$ 1983 von Naur;\\
-$M_{257} = 2^{257}-1 = 535.006.138.814.359\times1.155.685.395.246.619.182.673.033\times374.550.598.501.810.936.581.776.630.096.313.181.393$ $\rightarrow$ 1979 von Penk den ersten Faktor \& 1980 von Baille, der die anderen beiden Faktoren fand\end{center} (vgl. \cite[125--128]{Ribenboim2006}).
+$M_{257} = 2^{257}-1 = 535.006.138.814.359\times1.155.685.395.246.619.182.673.033\times374.550.598.501.810.936.581.776.630.096.313.181.393$ $\rightarrow$ 1979 von Penk den ersten Faktor \& 1980 von Baille, der die anderen beiden Faktoren fand\end{center} (vgl. \cite[125--128]{Ribenboim2006}).\end{exkurs}
 
 \subsubsection{Beweis von Euklid}\label{Beweis von Euklid}
 Als einfachster Beweis kann hier der Beweis von Euklid genannt werden.
 Gehen wir davon aus, dass wir den Fakt der bis heute herrschenden Auffassung “Es gibt unendlich viele Primzahlen” widerlegen möchten.
-Demnach formulieren wir hierzu zwei widersprüchliche Aussagen:\\\\
-\hspace*{20mm}P = Es gibt unendlich viele Primzahlen\\
-\hspace*{20mm}N = Es gibt endlich viele Primzahlen\\
-\\Da bei diesen Aussagen das Prinzip des Widerspruchs herrscht kann nur eine der beiden Aussagen korrekt sein.
+Demnach formulieren wir hierzu zwei widersprüchliche Aussagen:
+\begin{center}
+\begin{vermutung} P = Es gibt unendlich viele Primzahlen\end{vermutung}
+\begin{vermutung} N = Es gibt endlich viele Primzahlen\end{vermutung}
+\end{center}
+Da bei diesen Aussagen das Prinzip des Widerspruchs herrscht kann nur eine der beiden Aussagen korrekt sein.
 Wir wollen nun den Beweis antreten, dass N richtig und P inkorrekt ist.
 Demnach würde dies bedeuten, dass es eine höchste Primzahl “$p_r$” geben müsste.
-Nehmen wir nun die Reihe der oben angeführten Primzahlen:\\
+Nehmen wir nun die Reihe der oben angeführten Primzahlen:
 \begin{center}
 $2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, $…$, p_r$
-\end{center}\
-\\Als nächsten Schritt definieren wir eine neue Zahl $x$, nehmen die Zahlenreihe, multiplizieren diese unter einander in gleicher Reihenfolge und addieren am Ende der Reihe eine 1 hinzu.
-Daraus würde sich folgendes Bild ergeben:\\
+\end{center}
+
+Als nächsten Schritt definieren wir eine neue Zahl $x$, nehmen die Zahlenreihe, multiplizieren diese unter einander in gleicher Reihenfolge und addieren am Ende der Reihe eine 1 hinzu.
+Daraus würde sich folgendes Bild ergeben:
+
 \begin{center}
 $x = 2\times3\times5\times7\times11\times13\times17\times19\times23\times29\times31\times37\times41\times$…$\times$ $p_r$ + 1
-\end{center}\
-\\Die Addition von 1 am Ende der Multiplikation ist äußerst wichtig, da dadurch das Ergebnis $x$ nicht mehr exakt durch eine Primzahl aus der endlichen Reihe geteilt werden kann.\\
+\end{center}
+
+Die Addition von 1 am Ende der Multiplikation ist äußerst wichtig, da dadurch das Ergebnis $x$ nicht mehr exakt durch eine Primzahl aus der endlichen Reihe geteilt werden kann.
+
 Zur Auflösung dieser Zahlenreihe gibt es zwei mögliche Ergebnisse:
 \begin{itemize}
 \item[1.] $x$ ist selbst eine Primzahl, oder
 \item[2.] $x$ ist teilbar durch eine Primzahl die größer ist als $p_r$.
 \end{itemize}
 \textbf{Zu 1.:} Sollte $x$ tatsächlich eine Primzahl sein, dann wäre hiermit schon bewiesen, dass die Aussage N nicht stimmen kann.
-Da am Ende der Zahlenreihe $p_r$ + 1 gerechnet wird, muss $x$ > $p_r$ sein.\\\\
+Da am Ende der Zahlenreihe $p_r$ + 1 gerechnet wird, muss $x$ > $p_r$ sein.
+
 \textbf{Zu 2.:} Sehen wir uns nochmals den oben beschriebenen Fundamentalsatz der Arithmetik und deren Primfaktorzerlegung an.
 Dieser Satz besagt, dass sich jede Zahl als Produkt von Primzahlen darstellen lässt.
 Da sich $x$ durch die Addition von 1 nicht durch eine bekannte Primzahl aus der Zahlenreihe teilen lässt muss es doch im Umkehrschluss eine Primzahl geben, welche größer als $p_r$ ist, um $x$ teilbar zu machen.
-Auch hier gilt wiederum N als widerlegt.\\
-\\Da nun N als die falsche Aussage identifiziert wurde kann nur P mit der Aussage, dass es eine unendliche Anzahl von Primzahl gibt, Gültigkeit haben (vgl. \cite[3]{Ribenboim2006}).
+Auch hier gilt wiederum N als widerlegt.
+
+Da nun die Vermutung N als die falsche Aussage identifiziert wurde kann nur die Vermutung P mit der Aussage, dass es eine unendliche Anzahl von Primzahl gibt, Gültigkeit haben (vgl. \cite[3]{Ribenboim2006}).
 \begin{flushright}
 $\Box$
 \end{flushright}
+
+Durch den soeben angeführten Beweis gelangen wir zur folgenden Feststellung:
+\begin{satz}Es gibt unendlich viele Primzahlen.\end{satz}
+
 Dieser Beweis von Euklid ist an sich einer der einfachsten, doch aufgrund des Nichtwissens wie die neue Primzahl $p_r$ beschaffen ist, welche in jedem Schritt erzeugt wird, wirft dieser Beweis weitere Fragen auf.
 Zum einen lässt sich nur erkennen, dass die neue Primzahl $p_r$ in ihrer Größe höchstens gleich\newline
-$x$ = $p_1p_2...p_n$ + 1 ist. Jedoch kann es durchaus sein, dass die Zahl $x$ für manche Indizes $n$ selbst eine Primzahl und für andere $n$ aber teilbar ist.\\
-\\Im Buch “Die Welt der Primzahlen” von Paulo Ribenboim findet sich wohl die kürzeste Version von Euklids Beweis und unterstreicht dessen Richtigkeit von der Anzahl unendlicher Primzahlen:\\
+$x$ = $p_1p_2...p_n$ + 1 ist. Jedoch kann es durchaus sein, dass die Zahl $x$ für manche Indizes $n$ selbst eine Primzahl und für andere $n$ aber teilbar ist.
+
+Unter anderem wird für jede Primzahl $p$, $p\#$ als das Produkt aller Primzahlen $q$ mit $q \leq p$ bezeichnet. 
+Daraus ergeben sie des weiteren offen Fragen, welche bis heute noch als ungelöst gelten:
+\begin{itemize}
+    \item Gibt es $p \to \infty$, für die $p\# +1$ prim ist?
+    \item Gibt es $p \to \infty$, für die $p\# +1$ zerlegbar ist?
+\end{itemize}
+Dieser Abschnitt soll die Fragen lediglich formulieren.
+Ich werde hier dies nicht beantworten, da dies das Thema dieser Arbeit zu sehr verlängern würde.(vgl. \cite[4]{Ribenboim2006}).
+
+Im Buch “Die Welt der Primzahlen” von Paulo Ribenboim findet sich wohl die kürzeste Version von Euklids Beweis und unterstreicht dessen Richtigkeit von der Anzahl unendlicher Primzahlen:
+
 \begin{quote}
 \small
-\textbf{Beweis von Kummer.} Angenommen, es gäbe nur endlich viele Primzahlen $p_1 < p_2 <...< p_r$. Es sei $N = p_1p_2...p_r$, wobei N > 2.
+\textbf{Beweis von Kummer.} Angenommen, es gäbe nur endlich viele Primzahlen $p_1 < p_2 <...< p_r$.
+Es sei $N = p_1p_2...p_r$, wobei N > 2.
 Die Zahl N - 1, die wie alle natürlichen Zahlen ein Produkt von Primzahlen ist, muss mit N einen gemeinsamen Teiler $p_i$ haben, der dann wiederum die Differenz N - (N - 1) = 1 teilen müsste, was nicht sein kann. (\cite[4]{Ribenboim2006})
 \end{quote}
 \begin{flushright}
 $\Box$
 \end{flushright}
 
-\subsubsection{Bézout's Lemma}
-\textbf{Auch hier muss noch über dieses Thema recherchiert werden!}\\
-%Gibt es hier überhaupt wirklich interessantes zu schreiben, aber es wird vom Betreuuer verlangt!!
+Neben Euklid gibt es natürlich noch weitere Beweise.
+Zum Beispiel geht es beim Beweis von Euler ebenfalls um die Beantwortung der Frage, ob es unendlich viele Primzahlen gibt?
+Er zeigte, dass das Produkt aus allen Primzahlen unendlich groß wird.
+Die hierfür notwendige mathematische Darstellung werde ich hier nicht anführen, doch kann sie als weiterführendes Beispiel aus dem Buch “Die Welt der Primzahlen” von Paulo Ribenboim herangezogen werden.
+
+\subsection{Pseudoprimzahlen}\label{Pseudoprimzahlen}
+In diesem Abschnitt möchte ich nur kurz anschneiden was Pseudoprimzahlen sind und wofür man sie benötigt.
+Diese werden unter anderem bei diversen Primzahltestungen benötigt.
+
+Pseudoprimzahlen sind Zahlen, welche keine Primzahlen im eigentlichen Sinne darstellen.
+Sie sind natürliche, zerlegbare Zahlen die in ihren Eigenschaften ein ähnliches Verhalten wie Primzahlen zeigen.
+
+Doch woher stammen diese?\newline
+Durch die Suche und Findung von neuen Primzahlen ist man gezwungen diese auch zu beweisen.
+Damit man beweisen kann ob eine Primzahl tatsächlich prim ist erfand man diverse Algorithmen, welche zuverlässig bestimmen können, ob die Zahl prim ist oder nicht.
+Da es immer wieder vorkommt, dass eine vermutete Primzahl dann doch keine ist, aber bezogen auf den speziellen Algorithmus, sich diese Zahl wie eine Primzahl verhält, sind diese Pseudoprimzahlen zur Verbesserung der Algorithmen essentiell.
+
+Wann ist eine Zahl eine Pseudoprimzahl?\newline
+Eine zusammengesetzte Zahl, welche die Eigenschaft $2^{n-1}\equiv 1$ (mod $n$) erfüllt heißt Pseudoprimzahl.
+Interessant ist, dass alle Pseudoprimzahlen $n$ ungerade sind und ebenso die Form $2^n \equiv 2$ (mod $n$) erfüllen. 
+Dies ist zum Beispiel die Zahl 341.
+Sie hat in Summe 4 Teiler: $1, 11, 31, 341$ und stellt somit keine Primzahl dar.
+Sie ist aber bedeutsam, da sie sich vom kleinen fermat'schen Satz ableiten lässt und somit auch Fermatsche Pseudoprimzahl genannt wird (vgl. \cite[91]{Ribenboim2006}).
+
+\subsection{Der Kleine Satz von Fermat}\label{Der Kleine Satz von Fermat}
+Pierre de Fermat hat schon im 17. Jahrhundert eine Eigenschaft der Potenzierung dargelegt, welche heute als \textit{Der Kleine Satz von Fermat} bekannt ist. 
+Diese Eigenschaft generiert die Basis zur Ermittlung von Potenzfunktionen mit Inversen und ist für Primzahltestungen von zentraler Bedeutung (vgl. \cite[303]{Meinel2015}).
+Wir müssen hierfür die Berechnungsmethode “modulares Rechnen” aus Kapitel \ref{Modulare Arithmetik} Modulare Arithmetik von S. \pageref{Modulare Arithmetik} wieder aufgreifen.
+
+Ich werde mit der Definition beginnen und diese dann durch Sätze und Beispiele beweisen.
+Die Definition besteht grundsätzlich aus zwei Formulierungen.
+\begin{defi} Kleiner fermat'sche Satz: \label{Kleiner fermat'sche Satz}
+\begin{enumerate}
+    \item[1.]\textit{Falls $n \in \mathbb{N}$ eine Primzahl ist und $a \in \mathbb{Z}$, dann gilt:}\end{enumerate}
+\begin{center}
+$a^{n} \equiv a$ $(mod$ $n)$.
+\end{center}
+\begin{enumerate}
+    \item[2.]\textit{Sofern $n$ eine Primzahl ist und $n \nmid a$ und somit $n \neq 0$, dann gilt weiters:}\end{enumerate}
+\begin{center}
+$a^{n-1} \equiv 1$ $(mod$ $n)$.
+\end{center}\end{defi}
+
+Durch diese Darstellung und dem Wissen aus Kapitel \ref{Pseudoprimzahlen} können wir Beispiele anführen.
+
+\begin{bsp} Gegeben ist $n = 91$.\\
+Die Zahl 91 setzt sich zusammen aus $1, 7, 13, 91$ und ist somit eine Pseudoprimzahl der Basis $a = 3$.
+\begin{center}
+$3^{91} \equiv 3$ $(mod$ $91)$.
+\end{center}\end{bsp}
+\begin{bsp} Gegeben ist $n = 341$.\\
+Wie schon erwähnt handelt es sich hier um eine zusammengesetzte Zahl aus $1, 11, 31, 341$ und ist sie somit eine Pseudoprimzahl der Basis $a = 2$.
+\begin{center}
+$2^{341-1} \equiv 1$ $(mod$ $341)$.
+\end{center}\end{bsp}
+Das besondere an der Zahl 341 ist, dass 2 und 341 zueinander teilerfremd sind, sie aber die gleiche Kongruenz wie bei einer Primzahl erfüllt.
+
+\begin{satz}
+Für jedes $a \geq 2 \in \mathbb{Z}$ von Fermatschen Pseudoprimzahlen von Basis $a$, welche weniger oder gleich zu $x$ gilt $o(\pi(x))$.
+Sprich $x \rightarrow \infty$.
+Heißt auch, dass die Fermatschen Pseudoprimzahlen im Vergleich zu Primzahlen verhältnismäßig seltener auftauchen.
+\end{satz}
+Dieser Satz drückt aus, dass es einerseits weniger Pseudoprimzahlen gibt als Primzahlen selbst und das es auch unendlich viele Pseudoprimzahlen auf der Basis $a$ geben muss.
+
+\begin{beweis}
+Wenn $p \in \mathbb{P}$ und $a^2-1$ nicht teilt, dann muss $n = (a^{2p}-1)/(a^2-1)$ eine Pseudoprimzahl der Basis $a$ sein.
+Hier muss beachtet werden, dass für
+\[n = \frac {a^p + 1} {a - 1} \cdot \frac {a^p + 1} {a + 1},\]
+$n$ eine zusammengesetzte Zahl ist.
+Unter Berücksichtung des 1. Punktes der Definition \ref{Kleiner fermat'sche Satz} für eine Primzahl $p$ erhalten wir durch Potenzierung beider Seiten $a^{2p} \equiv a^2$ (mod $p$).
+Somit gilt, $p$ teilt $a^{2p} - a^2$.
+Aufgrund folgender Annahme, dass $p \nmid a^2 - 1$ und weiters $n - 1 = (a^{2p} / (a^2 - 1)$ ist, können wir schlussfolgern, dass $p \mid n - 1$ gilt.
+Zusätzlich können wir bei $n - 1$ beobachten, dass bei
+\[n - 1 \equiv a^{2p-2} + a^{2p-4} + \cdot\cdot\cdot + a^2,\]
+$n - 1$ gleich sein muss.
+Im Ergebnis dieses Beweises erkennen wir, dass 2 und $p$ Teiler von $n - 1$ sind.
+Das $2p$ ebenfalls ein Teiler sein muss, sodass $a^{2p} - 1$ ein Teiler von $a^{n-1} - 1$ ist.
+Aber $a^{2p} - 1$ ist ein Vielfaches von $n$ ist, sodass der 2. Punkt der Definition \ref{Kleiner fermat'sche Satz}, genauso wie der 1. Punkt stand hält (vgl. \cite[131--133]{Crandall2005}).
+\begin{flushright}
+$\Box$
+\end{flushright}
+\end{beweis}
+
+
+\subsection{Binäre Exponentiation}
+Die Binäre Exponentiation wird auch repeated squaring oder square-and-multipy genannt.
+Dieses Verfahren wurde etwa 200 v. Chr. von den Indern erstmals zitiert.
+Sie waren jedoch für lange Zeit die einzige Kultur, welche diese Berechnungsmethode angewandt hatte.
+
+Der Grundgedanke liegt darin, dass man versucht das Rechnen mit Potenzen zu vereinfachen und die Rechenwege zu verkürzen.
+Also die Effizienz einer Berechnung zu steigern.
+Bei der Berechnung von großen Zahlen ist dies besonders wünschenswert und dementsprechend von besonderer Bedeutung.
+So kann man, als kleines Beispiel, $a = b^4$ in unterschiedlichen Schreibweisen darstellen:
+\begin{center}
+$a = b \cdot b \cdot b \cdot b$ mittels 3 Multiplikationen, oder \\
+$c = b \cdot b$; $a = c \cdot c$ mittels 2 Multiplikationen oder \\
+aber auch $a = (b^2)^2$.
+\end{center}
+
+Betrachtet man eine große Zahl wie die bisher größte entdeckte Mersenne-Primzahl $2^{82589933} - 1$ so müsste man 82,589932 Mio. Multiplikationen durchführen und diese Zeit hat man schlichtweg einfach nicht.
+Aus diesem Grund hat man Algorithmen finden müssen um solche Berechnungen zeitlich zu begrenzen und bewerkstelligen zu können.
+
+Um dies zu verdeutlichen werden wir mit einem Beispiel die Vorgehensweise heranziehen:
+\bsp{(Binäre Expnentiation).}
+Um $b^k$ mit $k=233$ zu kalkulieren, könnte man wie schon oben beschrieben 232 mal multiplizieren.
+Dies stellt jedoch den längsten Rechenweg dar.
+Um so eine Berechnung nun effizienter gestalten zu können wird der Exponent, die Zahl 233, als Binärcode dargestellt.
+Dies ist die Zahl "11101001".
+Um mit diesem Code rechnen zu können setzt man für jede 0 den Buchstaben \textit{Q} und für jede 1 das Buchstabenpaar \textit{QM} ein.
+Somit ergibt sich durch die Umwandlung des Exponenten $k$ in die Binärdarstellung folgende Gliederung an Buchstaben:
+
+\begin{table}[h]\centering
+\begin{tabular}{c|c|c|c|c|c|c|c}
+1 & 1 & 1 & 0 & 1 & 0 & 0 & 1 \\
+\hline
+QM & QM & QM & Q & QM & Q & Q & QM \\
+\end{tabular}
+\caption{Binäre Darstellung der Zahl 233 und dessen Befehlskette}
+\label{tab:Binäre Darstellung der Zahl 233 und desses Befehlskette}
+\end{table}
+
+\newpage
+Wobei
+\begin{itemize}
+    \item[Q] $\rightarrow$ den Befehl zum Quadrieren und
+    \item[M] $\rightarrow$ den Befehl zum Multiplizieren mit b darstellt.
+\end{itemize}
+
+Die Binärdarstellung von $k > 0$ startet immer mit der Ziffer 1.
+In unserem Beispiel startet die Anweisung demnach mit \textit{QM}.
+Durch die Ausführung der Befehle erhalten wir eine Darstellung von ${1^2 \cdot b = b}$.
+\begin{center}
+${1^2}$ durch Q und $\cdot$ $b$ durch M.
+\end{center}
+Somit können wir mit einer Vereinfachung starten und die Folge beginnt mit $b$.
+Das erste Buchstabenpaar QM können wir somit ignorieren.\newline
+Die Zeichenkette kann nun sukzessive geschrieben werden:
+
+$b\stackrel{Q}{\longrightarrow}b^2\stackrel{M \cdot b}{\longrightarrow}b^3\stackrel{Q}{\longrightarrow}b^6\stackrel{M \cdot b}{\longrightarrow}b^7\stackrel{Q}{\longrightarrow}b^{14}\stackrel{Q}{\longrightarrow}b^{28}\stackrel{M \cdot b}{\longrightarrow}b^{29}\stackrel{Q}{\longrightarrow}b^{58}\stackrel{Q}{\longrightarrow}b^{116}\stackrel{Q}{\longrightarrow}b^{232}\stackrel{M \cdot b}{\longrightarrow}b^{233}$.
+
+Die obige Folge kurz dargestellt:
+\begin{center}
+$b, b^2, b^3, b^6, b^7, b^{14}, b^{28}, b^{29}, b^{58}, b^{116}, b^{232}$ und $b^{233}$.
+\end{center}
+
+Unter Berücksichtigung, dass wir das erste Buchstabenpaar \textit{QM} als b darstellen können lautet der Befehl von (QM)QMQMQQMQQQM: quadriere, multipliziere mit b, quadriere, multipliziere mit b, quadriere, quadriere, multipliziere mit b, quadriere, quadriere, quadriere, multipliziere mit b.\newline
+Im Ergebnis erhält man statt $b^{233}$:
+\begin{center}
+$\Biggl(\Biggl(\biggl(\biggl(\bigl(\bigl(((b^2)\cdot b)^2 \cdot b\bigr)^2\bigr)^2\biggr) \cdot b\biggr)^2\Biggr)^2\Biggr)^2 \cdot b$.
+\end{center}
+
+Durch diese Darstellung erkennt man sehr gut, dass man sich mit Hilfe der binären Exponentiation einige Rechenschritte durchaus ersparen kann.
+Anstatt von 232 Multiplikationen werden nur noch 11 benötigt, indem man 7 mal quadriert und 4 mal mit $b$ multipliziert (vgl. \cite{Knuth1971} in \cite[117--121]{Arndt2000}).
+
+Zusammenfassende Darstellung des Algorithmus:
+\algorithmus{(Binäre Exponentiation).}
+\begin{enumerate}
+    \item Es wird der Expontent $k$ in seinen Binärcode umgewandelt.
+    \item Wir ersetzen jede \textbf{0} mit \textbf{Q} und jede \textbf{1} mit \textbf{QM}.
+    \item Das führende Buchstabenpaar QM wird gestrichen, da ${1^2 \cdot b = b}$.
+    \item Wir folgen den Befehlen \textbf{Q} $\rightarrow$ \textbf{quadrieren} und \textbf{M} $\rightarrow$ \textbf{multiplizieren}.
+    \item Die sich daraus resultierende Zeichenkette bildet somit die Vorschrift zur Berechnung von $b^k$.
+\end{enumerate}
+
+Um die Darstellung des Binärcodes besser verstehen zu können werden wir diesen mit folgenden Exkurs erläutern.
+\exkurs{(Binärcode der Zahl 233).}\label{Binärcode der Zahl 233} Es gibt zwar Tabellen, welche den Binärcode einer jeden Zahl beakannt gibt, doch möchten wir hier auch vorstellen wie es zu diesem Code kommt.
+Die Zahl 233 kann auch so dargestellt werden:
+\begin{center}
+$233 = 128 + 64 + 32 + 8 + 1$ oder \\
+$233 = 2^7 + 2^6 + 2^5 + 2^3 + 2^0$ oder \\
+\end{center}
+Die letzte Zahlenreihe kann noch weiter aufgeteilt werden:
+\begin{center}
+$233 = \underline{1} \cdot 2^7 + \underline{1} \cdot 2^6 + \underline{1} \cdot 2^5 + \underline{0} \cdot2^4 + \underline{1} \cdot 2^3 + \underline{0} \cdot2^2 + \underline{0} \cdot 2^1 + \underline{1} \cdot 2^0$
+\end{center}
+Nun werden ausschließlich jene Zahlen betrachtet, welche vor dem $\cdot$ Zeichen stehen, also nur die unterstrichenen Zahlen, und somit erhält man den Binärcode der Zahl 233:
+\begin{center}
+\textbf{11101001}.
+\end{center}
+Die mathematische Darstellung der Zahlenreihe kann wie folgt aussehen:
+\[k = \sum_{j=0}^n k_j \cdot 2^j\]
+Wobei $k$ für den Exponenten steht, in unserem Beispiel ist das die Zahl 233, und $k_j \in \{0, 1\}$ darstellt.
+Betrachtet man nun $b^k$ kann man weitere Aufteilungen treffen:
+\begin{align}\setcounter{equation}{0}
+b^k = b^{\sum_{j=0}^n k_j \cdot 2^j} &= b^{k_0 \cdot 2^0 + k_1 \cdot 2^1 + \cdots + k_{n-1} \cdot 2^{n-1} + k_n \cdot 2^n} \\
+                                    &= b^{k_0 \cdot 2^0} \cdot b^{k_1 \cdot 2^1} \cdots b^{k_{n-1} \cdot 2^{n-1}} \cdot b^{{k_n} \cdot 2^n} \\
+                                    &= \prod_{j=0}^n b^{k_j \cdot 2^j}
+\end{align}
+
+Festgehalten wird, dass jede Zahl in seine Bestandteile zerlegt werden kann und somit hat auch jede Zahl ihren eigenen individuellen Binärcode.
+
+Obwohl die Berechnung um 221 Multiplikationen reduziert werden konnte gibt es noch eine weitere Verbesserung.
+Diese stellt die binäre modulo-Exponentiation dar.
+
+\subsubsection{Binäre modulo-Exponentiation}
+Bei der modularen Arithmetik von Kapitel \ref{Modulare Arithmetik} haben wir feststellen können, dass uns nur die Nachkommastellen, also die Reste einer Division, interessieren.
+Der Vorteil daran ist, dass ganzzählige Bestandteile bei der Anwendung der binären modulo-Exponentiation vernachlässigbar sind.
+Es werden demnach alle Zahlen, welche man zur Berechnung benötigt, deutlich kleiner und dies ist wiederum bei der Kalkulation von sehr großen Zahlen, wie den Primzahlen, wünschenwert.
+
+Anstatt, wie im obigen Beispiel beschrieben, die Multiplikationen zu reduzieren wird bei großen Zahlen zum Beispiel die letzte Zahl einer Kalkulation gesucht.
+Hierzu wird der Exponent wieder in seinen binären Code dargestellt und weiters werden in jedem Rechenschritt modulo-Operationen vollzogen.\newline
+Bevor wir dies anhand eines Beispiels zeigen können müssen wir aber im Vorfeld noch weitere Parameter klarstellen. Wie schon im Exkurs \ref{Binärcode der Zahl 233}. gezeigt wurde kann der Binärcode der Zahl 233 wie folgt aufgeschrieben werden:
+\begin{center}
+$233 = 1 \cdot 2^7 + 1 \cdot 2^6 + 1 \cdot2^5 + 0 \cdot2^4 + 1 \cdot 2^3 + 0 \cdot2^2 + 0 \cdot 2^1 + 1 \cdot 2^0$.
+\end{center}
+Da das Rechnung eines Exponenten mit der Zahl 0 im Ergebnis immer 1 ergibt können wir diese beim Rechnung mit der modulo-Exponentiation ignorieren. Aus diesem Grund wird die Formel (3) um einen Part $k \neq 0$ erweitert.
+\begin{align}
+b^k = \prod_{\substack{j=0\\k\neq0}}^n b^{k_j \cdot 2^j}
+\end{align}
+Durch Anwendung des Potenzgesetzes und dieser Erweiterung ist es uns möglich weitere Vereinfachungen zu treffen. Es gilt:
+\[{b^2}^{j+1} = {b^2}^{j \cdot 2} = (b^{2^j})^2\]
+
+
+Da nun die benötigten Regeln geklärt sind kann mittels dem folgenden Beispiel dargestellt werden wie durch die binäre modulo-Exponentiation die letzte Ziffer eine Zahl herausgefunden werden kann.
+Wir werden mit den Zahlen des vorherigen Beispiels fortfahren:
+\bsp{(Binäre modulo-Expnentiation).}\newline
+Wir erstellen für $a = b^k$ (mod $n$) mit $b = 29$, $k = 233$ und $n = 10$ die Kalkulation und suchen demnach von $a = 29^{233}$ (mod 10) die letzte Zahl.\newline
+Wir definieren: Um $a = b^k$ (mod $n$) berechnen zu können gilt $b, k \in \mathbb{N} \neq 1$.
+Wie schon bekannt besteht der Exponent $k$ aus dieser Berechnung:
+\begin{center}
+$233 = 1 \cdot 2^7 + 1 \cdot 2^6 + 1 \cdot2^5 + 0 \cdot2^4 + 1 \cdot 2^3 + 0 \cdot2^2 + 0 \cdot 2^1 + 1 \cdot 2^0$.
+\end{center}
+
+Von Interesse sind jedoch nur jene Zahlen welche mit 1 multipliziert werden, sodass Multiplikationen mit 0 ausgelassen werden können.
+Demnach bleibt folgende Berechnung übrig:
+\begin{center}
+$233 = 1 \cdot 2^7 + 1 \cdot 2^6 + 1 \cdot2^5 + 1 \cdot 2^3 + 1 \cdot 2^0$.
+\end{center}
+
+Um $a$ herauszufinden werden wir $(b^{2^j})^2$ anwenden und einfach in jede einzelne Addition von $b^k = 29^{(2^7 + 2^6 + 2^5 + 2^3 + 2^0)}$ einsetzen.
+\begin{align}
+29^{2^0} = 29 \equiv 9\ (mod\ 10)                           \rightarrow \underline{29^{2^0}} &\equiv \underline{9}\ (mod\ 10) \\
+29^{2^1} = (29^{2^0})^2 \equiv 9^2 = 81 \rightarrow 81 \equiv 1\ (mod\ 10) \rightarrow 29^{2^1} &\equiv 1\ (mod\ 10) \\
+29^{2^2} = (29^{2^1})^2 \equiv 1^2 \equiv 1\ (mod\ 10) \rightarrow 29^{2^2} &\equiv 1\ (mod\ 10) \\
+29^{2^3} = (29^{2^2})^2 \equiv 1^2 \equiv 1\ (mod\ 10) \rightarrow \underline{29^{2^3}} &\equiv \underline{1}\ (mod\ 10) \\
+29^{2^4} = (29^{2^3})^2 \equiv 1^2 \equiv 1\ (mod\ 10) \rightarrow 29^{2^4} &\equiv 1\ (mod\ 10) \\
+29^{2^5} = (29^{2^4})^2 \equiv 1^2 \equiv 1\ (mod\ 10) \rightarrow \underline{29^{2^5}} &\equiv \underline{1}\ (mod\ 10) \\
+29^{2^6} = (29^{2^5})^2 \equiv 1^2 \equiv 1\ (mod\ 10) \rightarrow \underline{29^{2^6}} &\equiv \underline{1}\ (mod\ 10) \\
+29^{2^7} = (29^{2^6})^2 \equiv 1^2 \equiv 1\ (mod\ 10) \rightarrow \underline{29^{2^7}} &\equiv \underline{1}\ (mod\ 10)
+\end{align}
+Aus Kapitel \ref{Modulare Arithmetik} wissen wir nun, wenn $a\equiv b$ (mod $n$) und $c\equiv d$ (mod $n$), dann gilt auch $a \cdot c\equiv b \cdot d$ (mod $n$).
+Somit können wir die Ergebnisse der gesuchten Berechnungen einfach miteinander multiplizieren.
+\begin{center}
+$a = 1 \cdot 1 \cdot 1 \cdot 1 \cdot 9 = 9$
+\end{center}
+Da wir im Ergebnis $a = 9$ erhalten muss die letzte Zahl von $29^{233}$ ebenfalls 9 sein (vgl. \cite[122]{Arndt2000}).
 
 Nun aber einen Blick zu den Mersenne-Primzahlen und eine Erklärung wann eine Zahl eine Mersenne Zahl oder eine Mersenne-Primzahl ist.
 
 \subsection{Mersenne-Primzahlen}\label{Mersenne-Primzahlen}
-Wie schon anfangs erwähnt haben Mersenne-Primzahlen folgende Form:\\
+Wie schon anfangs erwähnt haben Mersenne-Primzahlen folgende Form:
+
 \begin{center}
 $M_n := 2^{n}-1$.
-\end{center}\
-\\Interessant ist, dass Mersenne-Zahlen mit vollkommenen Zahlen auftreten.
+\end{center}
+Interessant ist, dass Mersenne-Zahlen mit vollkommenen Zahlen auftreten.
 Eine natürliche Zahl wird als vollkommen bezeichnet, wenn sie die Summe all ihrer kleineren Teiler ist.
-Als einfachste Beispiele können hier 2 Zahlenreihen angeführt werden:
+Als einfache Beispiele können hier 2 Zahlenreihen angeführt werden:
 \begin{center}
-$6 = 1+2+3$\\
+$6 = 1+2+3$\newline
 $28 = 1+2+4+7+14$
 \end{center}
 \textbf{\underline{Dies hat schon Euklides gezeigt:} --> Muss ein wenig überarbeitet werden.}
 \paragraph{Definition (Satz von Euklides):}
 Sofern n $\in$ $\mathbb{N}$ ist, dann ist $2^{n}-1$ prim.
-Weiters ist $2^{n}-1$($2^{n}-1$) eine vollkommene Zahl.\\
-\\Diese Definition ist sogar eine Formulierung von vollkommen geraden Zahlen und war lange Zeit unbewiesen.
+Weiters ist $2^{n}-1$($2^{n}-1$) eine vollkommene Zahl.
+
+Diese Definition ist sogar eine Formulierung von vollkommen geraden Zahlen und war lange Zeit unbewiesen.
 Der dafür notwendige Beweis kam später durch "{Euler}".
 Da man aufgrund dieser Beweise erkennen kann, dass die Kombination von Marsenne-Zahlen und vollkommenen Zahlen in der Zahlentheorie einen wichtigen Beitrag leisten, können Mersenne-Primzahlen weiter definiert werden:
 \paragraph{Definition (Mersenne-Primzahl):}
-Von einer Mersenne-Primzahl spricht man, wenn die Mersenne-Zahl selbst prim ist.\\
-\\Erklärungsgemäß bedeutet dies, dass eine Mersenne-Primzahl nur dann als solches gilt wenn $n$ ebenfalls eine Primzahl ist.
+Von einer Mersenne-Primzahl spricht man, wenn die Mersenne-Zahl selbst prim ist.
+
+Erklärungsgemäß bedeutet dies, dass eine Mersenne-Primzahl nur dann als solches gilt wenn $n$ ebenfalls eine Primzahl ist.
 Z.B. ist $M_5 = 2^{5}-1 = 31$ eine Mersenne-Primzahl, da $n$, dargestellt als hochgestellte (5), selbst prim ist.
 Auf den ersten Blick mag es den Anschein haben, dass für eine zusammengesetzte Zahl $n$ auch die Mersenne-Zahl $M_n$ zusammengesetzt sein muss.
 Dies kann jedoch verneint und kann nicht als Charaktermerkmal angeführt werden. Als Beispiel dient hier $M_{11} = 2^{11}-1 = 2047$.
 Da $23 \times 89$ die Zahl $2047$ ergibt, und somit mehr als zwei Teiler besitzt und gegen die Definition der Primzahlen verstößt, kann nicht von einer Primzahlen gesprochen werden.
-Vielmehr wird sie aber als eine zusammengesetzte Zahl bezeichnet (vgl. \cite[168--169]{RempeGillen2009}).\\
+Vielmehr wird sie aber als eine zusammengesetzte Zahl bezeichnet (vgl. \cite[168--169]{RempeGillen2009}).\newline
 Für interessierte Leser kann hier weiterführend der Lucas-Test erwähnt werden.
 Dieser Test dient als Beweis und liefert Antworten zum oben angeführten Problem der Primzahlen in Kombination mit zusammengesetzten Zahlen.
 Die Definition wird wie folgt ohne weitere Erörterung angeführt.
-\paragraph{Definition (Lucas-Test):}
+
+\subsubsection{Lukas-Lehmer-Test}
+\paragraph{Definition (Lucas-Test):}\label{Definition (Lucas-Test)}
 Wir definieren eine Folge $k_0,k_1,...$ von natürlichen Zahlen rekursiv durch $k_0$ := 4 und $k_{i+1}$ := $k_i^2-2$ für alle $i\geq 0$.
 \newline Sei nun $n\geq 3$ prim. Genau dann ist $M_n$ eine Mersenne-Primzahl, wenn $M_n$ ein Teiler ist von $k_{n-2}$.
-\textbf{Hier muss ich noch ein wenig mehr recherchieren, weil ich mir vorstellen kann, dass das nicht wirklich die Definition vom Lucas-Test ist!!!}\\
-\\Es gibt natürlich Unmengen an Forschungsmaterial zu diesen Zahlen, jedoch sind heute noch einige Fragen hierzu unbeantwortet:\\
-\\Sind unendlich viele Mersenne-Primzahlen vorhanden?\\
-\hspace*{15mm}Derzeit muss die Frage mit "JA"\ beantwortet werden, da es hierzu\\ 
-\hspace*{15mm}keine gegenteilige Argumentationen gibt.\\
-\\Gibt es unendlich viele zerlegbare Mersenne-Primzahlen?\\
-\\Ist jede Mersenne-Primzahl quadratfrei?
+\textbf{Hier muss ich noch ein wenig mehr recherchieren, weil ich mir vorstellen kann, dass das nicht wirklich die Definition vom Lucas-Test ist!!!}
 
-\subsubsection{Liste aller bisher entdeckten Mersennen-Primzahlen}
-%Hier muss die Tabelle von {http://www.austromath.at/mersenne/mersenne-primzahlen.html} eingefügt werden!!
+Es gibt natürlich Unmengen an Forschungsmaterial zu diesen Zahlen, jedoch sind heute noch einige Fragen hierzu unbeantwortet:\newline
+Sind unendlich viele Mersenne-Primzahlen vorhanden?\newline
+\hspace*{5mm}Derzeit muss die Frage mit "JA"\ beantwortet werden, da es hierzu keine\newline
+\hspace*{5mm}gegenteilige Argumentation gibt.
 
+Gibt es unendlich viele zerlegbare Mersenne-Primzahlen?
 
+Ist jede Mersenne-Primzahl quadratfrei?
 
+\newpage
+\subsubsection{Liste der 10 größten Mersenne-Primzahlen}
+Für den Abschluss dieses Kapitels werden hier die 10 bisher größten entdeckten Mersenne-Primzahlen angeführt.
+\begin{table}[h]\centering
+\begin{tabular}{|M{1cm}|c|c|c|M{4cm}|}
+\hline
+\textbf{Nr.} & \textbf{Exponent p} & \textbf{Dezimalstellen} & \textbf{Jahr} & \textbf{Entdecker} \\
+\hline
+42 & 25964951 & 7816230 & 2005 & Nowak, Woltman, Kurowski u. a. (GIMPS, PrimeNet) \\
+\hline
+43 & 30402457 & 9152052 & 2005 & Cooper, Boone, u. a. (GIMPS, PrimeNet) \\
+\hline
+44 & 32582657 & 9808358 & 2006 & Cooper, Boone, u. a. (GIMPS, PrimeNet) \\
+\hline
+45 & 37156667 & 11185272 & 2008 & Elvenich, Woltman, Kurowski, u. a. (GIMPS, PrimeNet) \\
+\hline
+46 *) & 43112609 & 12978189 & 2008 & Smith, Woltman, Kurowski, u. a. (GIMPS, PrimeNet) \\
+\hline
+47 *) & 42643801 & 12837064 & 2009 & Odd Magnar Strinmo, Melhus (GIMPS, PrimeNet) \\
+\hline
+48 *) & 57885161 & 17425170 & 2013 & Cooper, u. a. (GIMPS, PrimeNet) \\
+\hline
+49 *) & 74207281 & 22338618 & 2016 & Cooper, u. a. (GIMPS, PrimeNet) \\
+\hline
+50 *) & 77232917 & 23249425 & 2017 & Jonathan Pace (GIMPS, PrimeNet) \\
+\hline
+51 *) & 82589933 & 24862048 & 2018 & Patrick Laroche (GIMPS, PrimeNet) \\
+\hline
+\end{tabular}
+\begin{flushleft}
+*) Bei den letzten Zahlen wurde noch nicht bewiesen, dass es eine keine kleinere Mersenne-Primzahlen gibt.
+\end{flushleft}
+\caption{Liste der Mersenne-Primzahlen}
+\label{tab:Liste der Mersenne-Primzahlen}
+\autocite{ListederMersennePrimzahlen2020}
+\end{table}
 
-
-
-
-
-
+\newpage
 Wir haben nun einiges über Primzahlen erfahren. Wir haben verschiedene Tests und deren Existenz kennen gelernt.
 Nun stellt sich aber die Frage, wofür werden Primzahlen und deren Test in den unterschiedlichsten Verfahren denn eigentlich benötigt?
-Diese Thematik wird mit dem nächsten Abschnitt erklärt. \newpage
-
+Diese Thematik wird mit dem nächsten Abschnitt geklärt.
 
 \section{Kryptographie}\label{Kryptographie}
 
@@ -915,25 +1420,26 @@ Diese Thematik wird mit dem nächsten Abschnitt erklärt. \newpage
 Der Grundgedanke von Kryptographie ist eine Nachricht, welche für eine bestimmte Person oder Personengruppe verfasst wurde, zu verschlüsseln und für andere unleserlich zu machen.
 Archäologen gehen davon aus, dass im Zeitalter der Pharaonen etwa 1900 v. Chr., Ägypter eine Art von Verschlüsselung bei Pharaonengräber verwendeten, da teilweise ungewöhnliche Hieroglyphen benutzt wurden, welche bis heute noch nicht übersetzt werden konnten.
 Die Geschichte zeigt aber bislang unzählige Versuche der Menschheit, wie diese deren Nachrichten zu kodieren versuchten um nicht einbezogene Gruppen dieser vorzuenthalten.
-Um hier wenige Beispiele anzuführen:\\
+Um hier wenige Beispiele anzuführen:
 
 \textbf{Skytale}, etwa 475 v. Chr., wird des öfteren als erstes verifiziertes und raffiniertes Instrument der Verschlüsselung angeführt.
 Hierfür bedarf es lediglich zwei  Holzstäbe mit identen Durchmesser und einen Papyrusstreifen.
 Das Papyrus wurde um einen der Holzstäbe gewickelt und eine Nachricht darauf verfasst.
 Abgewickelt ergab sich daraus nur ein wirrer Buchstabensalat.
-Hatte die andere Person, welcher als Empfänger der Nachricht diente, den anderen Holzstab im selben Durchmesser so konnte nur er die Nachricht lesen.\\
+Hatte die andere Person, welcher als Empfänger der Nachricht diente, den anderen Holzstab im selben Durchmesser so konnte nur er die Nachricht lesen.
 
-Bei der \textbf{Polybius-Tafel}, zirka 190 v. Chr., wurden zum ersten Mal Buchstaben in numerische Zeichen umgewandelt und löste die Skytale ab.\\
+Bei der \textbf{Polybius-Tafel}, zirka 190 v. Chr., wurden zum ersten Mal Buchstaben in numerische Zeichen umgewandelt und löste die Skytale ab.
 
 Die \textbf{Caesar-Chiffre} wird vermutlich eines der bekanntesten Methoden zur Verschlüsselung sein.
 Bei dieser Verschlüsselung handelt es sich um eine “monoalphabetische”.
 Bei dieser Art der Kodierung werden die Buchstaben des Alphabets vertauscht und es entsteht als Endprodukt ein sogenanntes Schlüsselalphabet, welches zur Entschlüsselung von Nachricht unbedingt benötigt wird.
-Bei der Caesar-Chiffre wurden die Buchstaben des Alphabets einfach um drei Stellen nach rechts verschoben.\\
+Bei der Caesar-Chiffre wurden die Buchstaben des Alphabets einfach um drei Stellen nach rechts verschoben.
+
 Man kann sich durchaus leicht vorstellen, dass diese Arten der Verschlüsselung auf Dauer recht unsichere Methoden waren.
 Sobald man als nicht einbezogene Partei einmal die Grundidee dahinter verstanden hatte ist die Dekodierung ein leichtes.
 Bei den ersten zwei Beispielen müsste man die Nachrichten einfach nur um mehrere Holzstäbe unterschiedlichen Durchmessers wickeln bis man die Nachricht lesen kann.
 Selbst bei der Anwendung des Schlüsselalphabets ist es irrelevant nach links zu verschieben und, oder die Anzahl der Stellen zu ändern.
-Das Prinzip bleibt im Grunde gleich.\\
+Das Prinzip bleibt im Grunde gleich.
 
 \textbf{ENIGMA}, die damals ausgeklügelste Methode in Form einer Verschlüsselungsmaschine, ist ein weiteres sehr bekanntes Verschlüsselungssystem und wurde von den Deutschen im 2. Weltkrieg eingesetzt.
 Es wurde eine sogenannte “polyalphabetische” Verschlüsselung verwendet.
@@ -946,9 +1452,9 @@ Durch die geschichtliche Zusammenfassung im vorherigen Abschnitt wurde ein grobe
 Jedoch möchte ich zusätzlich vermerken, dass sich die Kryptographie generell mit der Entwicklung, Erforschung und Verbesserung von Verschlüsselungsmethoden befasst.
 Das dahinter steckende Ziel ist es Nachrichten so einfach und schnell wie möglich zu verschlüsseln und für Außenstehende unkenntlich und unbrauchbar zu machen.
 Als Gegenspieler der Kryptographie wird die Kryptoanalyse bezeichnet.
-Hier wird versucht die kodierte Nachricht ohne dem Wissen des passenden Schlüssels zu dekodieren und die verwendeten Verschlüsselungssysteme herauszufinden.\\
+Hier wird versucht die kodierte Nachricht ohne dem Wissen des passenden Schlüssels zu dekodieren und die verwendeten Verschlüsselungssysteme herauszufinden.
 
-Bei den oben angeführten Beispielen im Abschnitt \ref{Kryptographie} erkennt man jedoch, dass alle Systeme durch damalige Kryptoanalytiker bezwungen und der Schlüssel herausgefunden wurde.
+Bei den oben angeführten Beispielen im Abschnitt \ref{Kryptographie} erkennt man jedoch, dass alle Systeme durch damalige Kryptoanalytiker bezwungen und der Schlüssel herausgefunden wurden.
 Wo lag also der Fehler bei den unterschiedlichen Verschlüsselungsformen?
 Alle der vier genannten Beispiele haben denselben Nachteil, sie sind symmetrische Verschlüsselungssysteme.
 Das bedeutet in diesem Zusammenhang, dass der Schlüssel zum senden und empfangen der Nachricht ident war.
@@ -961,7 +1467,8 @@ Für die Entschlüsselung wird jedoch ein weiterer Schlüssel, der “private-ke
 Beide Schlüssel werden hier nicht vom Sender der Nachricht erstellt sondern vom Empfänger.
 Wichtig ist hier, dass nur der öffentliche Schlüssel bekannt gegeben wird.
 Jeder Besitzer des öffentlichen Schlüssels hat nun die Möglichkeit dem Empfänger eine verschlüsselte Nachricht zukommen zu lassen.
-Jedoch kann nur der Empfänger solche Nachrichten auch entschlüsseln, da er die einzige Person ist, welche den privaten Schlüssel besitzt.\\\\
+Jedoch kann nur der Empfänger solche Nachrichten auch entschlüsseln, da er die einzige Person ist, welche den privaten Schlüssel besitzt.
+
 Das \textbf{RSA-Verfahren} ist das bekannteste und wohl am meist verbreitete Modell der Public-Key-Verschlüsselung.
 Dieses Verfahren wurde 1977 von Roland \textbf{R}ivest, Adi \textbf{S}hamir und Leonard \textbf{A}dleman benannt und basiert auf einem von Diffie und Hellmann entwickelten Verfahren zum sicheren Schlüsselaustausch (vgl. \cite[105]{RempeGillen2009}).
 
@@ -970,24 +1477,52 @@ Dieses Verfahren wurde 1977 von Roland \textbf{R}ivest, Adi \textbf{S}hamir und 
 \newpage
 
 \section{Was noch fehlt und unbedingt mit eingebaut werden muss!!}
-\subsection{Bézout's Lemma}
-\subsection{Fermat's Little Theorem}
-\subsection{Was ist der Algorithmus für wiederkehrendes Quadrieren?}
+\subsection{Mersenne-Primzahl}
+Hier muss das Thema noch stark ausgebaut werden. Bislang wurden hier nur zusammenhanglose Dinge niedergeschrieben. Dies muss bereinigt werden.
+\subsubsection{Lukas Lehmer Test}
+Um auch eine Mersenne-Primzahl beweisen zu können muss ich mind. eine Primzahltestung aufführen. Hier könnte es unter Umständen sogar reichen, wenn ich diesen Test nur erwähne, Sätze und Beispiele gebe aber die Beweise nur anspreche.
 \subsection{Wann ist eine Nummer ein perfektes Quadrat? - Newton Methode}
+You should also discuss how to determine whether a number is a perfect square by an adaptation of Newton's Method.
+\subsection{Formatierung}
+Es müssen alle Defintionen, Sätze, Beweise, usw. in das neue Format gebracht werden, damit alles eine Linie hat und nach einer Einheit aussieht.
+\newpage
+
+\section{Kann, muss aber nicht eingebaut werden}
+\subsection{Beweis von Euler}\label{Beweis von Euler}
+\begin{quote}
+\small
+Es sei $p$ eine beliebige Primzahl. Dann ist $1/p < 1$, und die geometrische Reihe summiert sich zu
+\[\sum_{k=0}^\infty \frac{1}{p^k} = \frac{1}{1-(1/p)}.\]
+Für eine weitere Primzahl $q$ ergibt sich analog
+\[\sum_{k=0}^\infty \frac{1}{q^k} = \frac{1}{1-(1/q)}.\]
+Indem man diese Gleichungen miteinander multipliziert, erhält man:
+\[1 + \frac{1}p + \frac{1}q + \frac{1}{p^2} + \frac{1}{pq} + \frac{1}{q^2} + \cdot\cdot\cdot = \frac{1}{1-(1/p)} \times \frac{1}{1-(1/q)}.\]
+Die linke Seite ist genau die Summe der Inversen aller natürlichen Zahlen der Form ${p^h}{q^k}$ ($h \geq 0$, $k \geq0$), wobei jede genau einmal gezählt wird, denn jede natürliche Zahl besitzt eine eindeutige Darstellung als Produkt von Primfaktoren.
+Diese einfache Idee ist die Basis des nun folgenden Beweises.\newline
+\textbf{Beweis von Euler.} Angenommen, $p_1, p_2, ..., p_n$ seien sämtliche Primzahlen.
+Für jedes $i = 1, ..., n$ ist
+\[\sum_{k=0}^\infty \frac{1}{p^k_i} = \frac{1}{1-(1/p_i)}.\]
+Wenn man diese $n$ Gleichungen miteinander multipliziert, erhält man
+\[\prod_{i=1}^n \Biggl(\sum_{k=0}^\infty \frac{1}{p^k_i}\Biggr) = \prod_{i=1}^n \frac{1}{1-(1/p_i)}.\]
+Die linke Seite ist gleich der Summe der Inversen aller natürlichen Zahlen, jeweils einmal gezählt, was sich aus der Eindeutigkeit der Primfaktorzerlegung ergibt.\newline
+Die Reihenfolge der Summation ist beliebig, weil die Summanden der Reihe positiv sind.
+Daher ist die linke Seite gleich $\sum_{n=1}^\infty (1/n)$, und diese Reihe ist divergent.
+Doch die rechte Seite hat offensichtlich einen endlichen Wert, und dies ist ein Widerspruch.\newline
+\autocite[8--9]{Ribenboim2006}
+\begin{flushright}
+$\Box$
+\end{flushright}
+\end{quote}
+
 \newpage
 
 \section*{}
 \addcontentsline{toc}{section}{\protect{}Literatur}
 \printbibliography
 
-\newpage
-
 \listoftables
 \addcontentsline{toc}{section}{\protect{}Tabellenverzeichnis}
-\newpage
 
 \listoffigures
 \addcontentsline{toc}{section}{\protect{}Abbildungsverzeichnis}
-
-
 \end{document}
