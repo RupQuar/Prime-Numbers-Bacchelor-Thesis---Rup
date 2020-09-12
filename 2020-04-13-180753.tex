@@ -125,7 +125,7 @@ $M_{77.232.917} = 2^{77.232.917}-1$ $\rightarrow$ 2017 von Jonathan Pace (GIMPS)
 $M_{82.589.933} = 2^{82.589.933}-1$ $\rightarrow$ 2018 von Patrick Laroche (GIMPS)
 \end{center}
 
-Diese Art von Primzahlen sind besonders, da in dieser Schriftweise $2^n-1$ erst 51 Primzahlen gefunden wurden (\cite{ListederMersennePrimzahlen2020}).
+Diese Art von Primzahlen sind besonders, da in dieser Schriftweise $2^n-1$ erst 51 Primzahlen gefunden wurden (vgl. \cite{ListederMersennePrimzahlen2020}).
 \newpage
 
 \tableofcontents
@@ -155,7 +155,13 @@ xxxxxxxxxxxxxxxxxxxxxxx\=xxxxxxxxxxxxxxxxxxxxxxx\kill
 \\$A \Rightarrow B $      \> aus Aussage A folgt Aussage B\\
 \\$A \cup B$              \> Vereinigung der Mengen A und B\\
 \\ggT  oder $\sqcap$      \> größter gemeinsamer Teiler\\
-\\kgV  oder $\sqcup$      \> kleinstes gemeinsames Vielfaches\\
+\\kgV  oder $\sqcup$      \> kleinstes gemeinsames Vielfaches
+\end{tabbing}
+\newpage
+
+\begin{tabbing}
+xxxxxxxxxxxxxxxxxxxxxxx\=xxxxxxxxxxxxxxxxxxxxxxx\kill
+\large Symbol             \> \large Erläuterung\\
 \\$k \mid n$              \> die Zahl $k$ teilt die Zahl $n$\\
 \\$k \nmid n$             \> die Zahl $k$ teilt die Zahl $n$ nicht\\
 \\$\vert x \vert$         \> Betrag von $x$\\
@@ -218,7 +224,7 @@ Um komplexe mathematische Themen zu vereinfachen werden diese anhand von Beispie
 
 Die Abhandlung ist in drei große Segmente unterteilt.
 
-Im ersten Abschnitt werden die Grundregeln der Mathematik nochmals wiederholt und soll Erkenntnisse aus schon vergangener und zum Teil vergessener Schulzeit wieder in Erinnerung rufen.
+Im ersten Abschnitt werden die Grundregeln der Mathematik nochmals wiederholt und sollen Erkenntnisse aus schon vergangener und zum Teil vergessener Schulzeit wieder in Erinnerung rufen.
 Die Zahlentheorie beschäftigt sich mit den Eigenschaften von Zahlen und zerlegt eine solche Zahl unter anderem in seine Primfaktoren.
 Im letzten Teil dieses Abschnitts tauchen wir schon etwas in die Tiefe und diskutieren den \textit{Euklidischen Algorithmus}.
 
@@ -528,7 +534,7 @@ Es seien $a, b, m \in \mathbb{Z}$ beliebig. Dann ist jeder gemeinsame Teiler von
 Insbesondere gilt ggT($a, b$) = ggT($a, b + m \cdot a$).\newline
 \autocite[17]{RempeGillen2009}\newpage
 \end{quote}
-\textbf{Aufbau des Euklidischen Algorithmus:}\newline
+\subsubsection{Aufbau des Euklidischen Algorithmus}
 Gegeben ist $a, b \in \mathbb{N}$ mit $a \ge b \ge 1$.
 Weiters bestimmen wir das $a_0 := a$ und $a_1 := b$.
 Hiermit werden wir Divisionsketten mit Rest bilden.
@@ -571,9 +577,8 @@ Daher erfüllt $a_k$ die Definition ein ggT zu sein $\to$ $a_k$ = ggT($a_0,a_1$)
 $\Box$
 \end{flushright}
 
-\newpage
-\textbf{Das Lemma von Euklid}
 
+\subsubsection{Das Lemma von Euklid}
 Sehen wir uns nun nochmals das Negativbeispiel auf Seite \pageref{Negativbeispiel} an.
 In diesem konnten wir eine nicht wahre Vermutung erkennen, dass $k \nmid n$ und $k \nmid m$ sofern $k \mid n \cdot m$ gilt.
 Wir können aber eine weitere Bedingung hinzufügen um einen wahren Satz zu erhalten.
@@ -659,7 +664,8 @@ Die Differenz dieser Zahlen ist ein Vielfaches von $n$, wenn $a-b$ ein Vielfache
 \end{defi}
 
 \newpage
-\begin{exkurs}[Kongruent]
+\begin{exkurs}(Kongruent).
+\par\begingroup\leftskip=0.5cm\rightskip=0.5cm\noindent
 Kongruent bedeutet umgangssprachlich, dass innerhalb des vorgegebenen Systems in dem man sich bewegt und rechnet es sich eigentlich immer um die selben Zahlen handelt.
 Verwendet man statt $\equiv$ ein = erhaltet man im Grunde das selbe Ergebnis.
 Dies ist anhand der Abbildung \ref{fig:Tageszeiten im Vergleich mit kongruenten Zahlen} sehr gut ersichtlich.
@@ -670,6 +676,8 @@ Wenn wir uns das einführende Beispiel dieses Kapitels mit der Zahl 23 ansehen h
 Dies stimmt auch mit unserem Ergebnis überein.
 Weiters zählt die Zahl 23 aber auch für die Zahlen 47, -1 und -25.
 Egal ob positiv oder negativ, die Spirale könnte bis ins unendliche weitergeführt werden (vgl. \cite[298--299]{Meinel2011}).
+\par
+\endgroup
 \end{exkurs}
 
 Anhand der soeben definierten Bedingung stellt sich nun die Frage ob die Differenz von $a$ und $b$ durch $n$ teilbar ist?
@@ -890,13 +898,15 @@ Unter anderem handelt das siebente Buch von der Zahlentheorie und beinhaltet den
 
 Die Definitionen von Primzahlen lauten wie folgt:
 \begin{defi}(Primzahlen).\newline
-Primzahlen sind natürliche Zahlen, die exakt zwei Teiler besitzen.\end{defi}
+Primzahlen sind natürliche Zahlen, die exakt zwei Teiler besitzen.
+\end{defi}
 \begin{defi}(Primzahlen).\newline
-Primzahlen sind natürliche Zahlen, welche genau durch 2 verschiedene natürliche Zahlen geteilt werden können.\end{defi}
+Primzahlen sind natürliche Zahlen, welche genau durch 2 verschiedene natürliche Zahlen geteilt werden können.
+\end{defi}
 
 Nach diesen Definitionen ist eine Zahl dann eine Primzahl wenn diese durch 1 und sich selbst ohne Rest teilbar ist.
-
-\begin{exkurs}(Exkurs zu den Zahlen 0 und 1).\label{Exkurs zu den Zahlen 0 und 1}\newline
+\begin{exkurs}(Exkurs zu den Zahlen 0 und 1).\label{Exkurs zu den Zahlen 0 und 1}
+\par\begingroup\leftskip=0.5cm\rightskip=0.5cm\noindent
 Die Zahlen 0 und 1 sind keine Primzahlen!
 Die Zahl 0 kann nicht durch sich selbst geteilt werden und daher spricht sie gegen diese Definition.
 Wie schon Anfangs im Kapitel \ref{Eingliederung von Zahlen} bei der Definition von $\mathbb{Z}$ beschrieben ist die Berechnung 0:0 nicht zulässig.\newline
@@ -904,6 +914,8 @@ Die Zahl 1 war unter Mathematikern lange als Primzahl anerkannt, da sie der oben
 Doch wurde sie aufgrund von mehreren Problemen mit der Zeit aus der Reihe der Primzahlen entfernt.
 Zum einen erfüllt sie zwar das Kriterium der Teilbarkeit durch 1 und sich selbst, doch hat die Zahl 1 nur einen Teiler, wohingegen alle anderen Primzahlen zwei Teiler besitzen.
 Auch führt diese Zahl bei der Primfaktorzerlegung zu Problemen, welche weiter unten angeführt werden.
+\par
+\endgroup
 \end{exkurs}
 
 \subsection{Welche Arten von Primzahlen gibt es?}\label{Welche Arten von Primzahlen gibt es?}
@@ -1013,6 +1025,7 @@ Für kleine Zahlen ist dieses Siebverfahren durchaus geeignet, doch es lässt si
 Bevor wir den "Kleinen Satz von Fermat"\ diskutieren können benötigen wir das Wissen über Pseudoprimzahlen.
 Dies wird im nächsten Abschnitt beschrieben.
 
+\newpage
 \subsubsection{Pseudoprimzahlen}\label{Pseudoprimzahlen}
 In diesem Abschnitt wird in Kürze erklärt was Pseudoprimzahlen sind und wofür man sie benötigt.
 Diese werden unter anderem bei diversen Primzahltestungen benötigt.
@@ -1039,6 +1052,8 @@ Wir müssen hierfür die Berechnungsmethode “modulares Rechnen” aus Kapitel 
 
 Wir werden mit der Definition beginnen und diese dann durch Sätze und Beispiele beweisen.
 Die Definition besteht grundsätzlich aus zwei Formulierungen.
+
+\newpage
 \begin{defi}(Kleiner fermat'sche Satz). \label{Kleiner fermat'sche Satz}
 \begin{enumerate}
     \item[1.]\textit{Falls $n \in \mathbb{N}$ eine Primzahl ist und $a \in \mathbb{Z}$, dann gilt:}\end{enumerate}
@@ -1137,7 +1152,8 @@ Jedes $n \in \mathbb{N}$ kann in der Form
 dargestellt werden, wobei $n_2$, $n_3$, $n_5$, $n_7$, ... $\in \mathbb{N}$ eindeutig bestimmt sind.
 \end{satz}
 
-\begin{exkurs}(Faktorisierung).\newline
+\begin{exkurs}(Faktorisierung).
+\par\begingroup\leftskip=0.5cm\rightskip=0.5cm\noindent
 Die Zerlegung einer kleinen Zahl wie zum Beispiel der Zahl 153 stellt kein großes Problem dar und kann einfach mit einem Taschenrechner von statten gehen.
 Für große Zahlen jedoch bedarf es ausgeklügelte Programme und Algorithmen, welche allein mit einem Taschenrechner nicht mehr zu bewerkstelligen sind.\newline
 Beispiele für die Primfaktorzerlegung einiger Mersenne Zahlen, welche noch vor der Erfindung von Computern herausgefunden wurden:
@@ -1148,7 +1164,10 @@ $M_{73} = 2^{73}-1 = 439\times2.298.041\times9.361.973.132.609$ $\rightarrow$ 18
 Weitere Beispiele der Faktorisierung aus der jüngeren Zeit:
 \begin{center}
 $M_{193} = 2^{193}-1 = 13.821.503\times61.654.440.233.248.340.616.559\times14.732.265.321.145.317.331.353.282.383$ $\rightarrow$ 1983 von Naur;\\
-$M_{257} = 2^{257}-1 = 535.006.138.814.359\times1.155.685.395.246.619.182.673.033\times374.550.598.501.810.936.581.776.630.096.313.181.393$ $\rightarrow$ 1979 von Penk den ersten Faktor \& 1980 von Baille, der die anderen beiden Faktoren fand\end{center} (vgl. \cite[125--128]{Ribenboim2006}).\end{exkurs}
+$M_{257} = 2^{257}-1 = 535.006.138.814.359\times1.155.685.395.246.619.182.673.033\times374.550.598.501.810.936.581.776.630.096.313.181.393$ $\rightarrow$ 1979 von Penk den ersten Faktor \& 1980 von Baille, der die anderen beiden Faktoren fand\end{center} (vgl. \cite[125--128]{Ribenboim2006}).
+\par
+\endgroup
+\end{exkurs}
 
 \subsubsection{Beweis von Euklid}\label{Beweis von Euklid}
 Als einfachster Beweis kann hier der Beweis von Euklid genannt werden.
@@ -1305,7 +1324,9 @@ Zusammenfassende Darstellung des Algorithmus:
 \end{enumerate}
 
 Um die Darstellung des Binärcodes besser verstehen zu können werden wir diesen mit folgenden Exkurs erläutern.
-\exkurs{(Binärcode der Zahl 233).}\label{Binärcode der Zahl 233} Es gibt zwar Tabellen, welche den Binärcode einer jeden Zahl beakannt gibt, doch möchten wir hier auch vorstellen wie es zu diesem Code kommt.
+\begin{exkurs}(Binärcode der Zahl 233).\label{Binärcode der Zahl 233}
+\par\begingroup\leftskip=0.5cm\rightskip=0.5cm\noindent
+Es gibt zwar Tabellen, welche den Binärcode einer jeden Zahl beakannt gibt, doch möchten wir hier auch vorstellen wie es zu diesem Code kommt.
 Die Zahl 233 kann auch so dargestellt werden:
 \begin{center}
 $233 = 128 + 64 + 32 + 8 + 1$ oder \\
@@ -1336,6 +1357,7 @@ Somit haben wir nun mit $b_7$ beginnend eine Folge von
 \begin{center}
 $b_7b_6b_5b_4b_3b_2b_1b_0 = 11101001$.
 \end{center}
+
 Die mathematische Darstellung der Zahlenreihe kann wie folgt aussehen:
 \[k = \sum_{j=0}^n k_j \cdot 2^j.\]
 Wobei $k$ für den Exponenten steht, in unserem Beispiel ist das die Zahl 233, und $k_j \in \{0, 1\}$ darstellt.
@@ -1345,6 +1367,8 @@ b^k = b^{\sum_{j=0}^n k_j \cdot 2^j} &= b^{k_0 \cdot 2^0 + k_1 \cdot 2^1 + \cdot
                                     &= b^{k_0 \cdot 2^0} \cdot b^{k_1 \cdot 2^1} \cdots b^{k_{n-1} \cdot 2^{n-1}} \cdot b^{{k_n} \cdot 2^n} \\
                                     &= \prod_{j=0}^n b^{k_j \cdot 2^j}
 \end{align}
+\par
+\endgroup
 
 Festgehalten wird, dass jede Zahl in seine Bestandteile zerlegt werden kann und somit hat auch jede Zahl ihren eigenen individuellen Binärcode (vgl. \cite[130-132]{Meinel2015}).
 
@@ -1460,6 +1484,7 @@ Eine Mersenne-Primzahl ist dann eine Primzahl, wenn ihr binärer Code ausschlie�
 Zusätzlich muss die Anzahl der Binärziffern selbst eine Primzahl sein.
 \end{defi}
 
+\newpage
 Somit ergibt sich für uns folgendes Bild:
 \begin{table}[h]\begin{center}
 \begin{tabular}{c|c|c|c|c|c|c}
@@ -1518,8 +1543,6 @@ xxxxxxxxxx\=xxxxxxxxxxxxxxx\=xxxxxxxxxxxxx\=xxxxxxx\=xxxxxxxx\kill
 \end{tabbing}
 Mit der vierten Berechnung erhalten wir $S(4) = 0$ und somit ist $M_5 = 31$ eine Primzahl.
 \end{bsp}
-
-\newpage
 
 \begin{bsp}{Prüfung ob $M_{11} = 2^{11} - 1 = 2047$ prim ist}.\label{bsp}\newline
 Eigentlich wissen wir schon das $M_{11}$ keine Primzahl ist, jedoch ist dieses ein sehr gutes Gegenbeispiel.
@@ -1627,21 +1650,22 @@ Für den Abschluss dieses Kapitels werden hier die 10 bisher größten entdeckte
 Die Disziplin der Primzahlen versucht eine Vielzahl von Problemen zu lösen, welche sich durchaus leicht formulieren lassen (vgl. \cite[13]{Pomerance1996}).
 Um einer Lösung von gewissen Problemen näher zu kommen befassen sich viele Mathematiker mit diesem Thema.
 Wie zu erkennen ist, wird über diese Thematik auch sehr viel geschrieben.
-Es werden Vermutungen, Sätze und Definitionen vormuliert und wieder widerlegt, da durch die Findung von besseren Algorithmen zuvor als richtig geglaubte Beweise sich als inkorrekt herausstellen.
-Die Anzahl der Bücher ist nur schwer überschaubat und daher musste diese Arbeit auf das Wesentlichste gekürzt werden um hier nur Einblicke in dieses sehr interessante Themengebiet zu verschaffen.
+Es werden Vermutungen, Sätze und Definitionen formuliert und widerlegt, da durch die Findung von besseren Algorithmen die zuvor als richtig geglaubten Beweise sich als inkorrekt herausstellen.
+Die Anzahl der Bücher ist nur schwer überschaubar und daher musste diese Arbeit auf das Wesentlichste gekürzt werden um hier nur Einblicke in dieses sehr interessante Themengebiet zu verschaffen.
 
-Man kann durch die Liste der Mersenne-Primzahlen gut sehen, dass ohne der Zuhilfenahme eines oder mehrerer hochleistungsstarker Computer, es unmöglich wäre eine Zahl als Primzahl zu identifizieren.
+Man kann durch die Liste der Mersenne-Primzahlen gut sehen, dass ohne der Zuhilfenahme eines oder mehrerer hochleistungsstarker Computer, es unmöglich wäre eine solche Zahl als Primzahl zu identifizieren.
 Ganz zu schweigen davon, dass man dann auch noch ohne eines solchen Computers beweisen könnte, dass die besagte Zahl tatsächlich prim ist.
 Durch den \textit{Lucas-Lehmer-Test} wurde bereits ein Meilenstein zur Lösung solcher Probleme gelegt, doch wird man immer wieder auf der Suche nach geeigneteren Maßnahmen sein.
 Einer dieser essentiellen Maßnahmen ist der \textit{APRCL-Test}.
 Dieser ist aber so komplex, dass er in dieser Arbeit nur erwähnt wird.
 Über ihn könnte eine eigene Arbeit verfasst werden.
-Eine durchwegs komplizierte aber sehr förderliche Angelegenheit ist es die Berechnungen so effizient wie möglich zu gestalten.
-Hierfür dient die \textit{spezielle Form einer Modulo-Operation}, welche Zahlen in deren binäeren Code umwandelt und anschließend eine modulare Berechnung in binärer Darstellung durchführt.
+
+Eine durchwegs komplizierte aber sehr förderliche Angelegenheit ist es die Effizienzsteigerung solch komplexer Berechnungen.
+Hierfür dient die \textit{spezielle Form einer Modulo-Operation}, welche Zahlen in deren binäeren Code umwandelt und anschließend eine modulare Berechnung in dieser Darstellung durchführt.
 Solche Methoden, welche die Effizienz einer Berechnung steigern sind äußerst hilfreich.
 Sie verkürzen die Rechenschritte und demnach auch die Zeit und Rechenleistung die ein leistungsstarker Computer benötigt um eine Primzahl erkennen und beweisen zu können.
 Durch die Darstellung einer Zahl in deren binären Code konnte gezeigt werden, dass Multiplikationen deutlich reduziert werden können.
-Da egal welche Zahl, eine jede Zahl kann durch 1 und 0 dargestellt werden und druch Befolgung eines gewissen Befehlscode werden die Berechnung von großen Zahlen deutlich vereinfacht.
+Da egal welche Zahl, eine jede Zahl durch 1 und 0 dargestellt werden kann und durch Befolgung eines gewissen Befehlcodes werden die Berechnungen von großen Zahlen deutlich vereinfacht.
 
 Es gibt natürlich Unmengen an Forschungsmaterial und Literatur zu diesem Thema, jedoch sind heute noch einige Fragen hierzu unbeantwortet.
 Natürlich konnte in dieser Arbeit nicht auf jedes Detail eingegangen werden, doch wird ein guter Überblick und eine leichte Einführung ermöglicht.
