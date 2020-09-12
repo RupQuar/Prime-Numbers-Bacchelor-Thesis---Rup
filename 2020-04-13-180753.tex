@@ -33,7 +33,7 @@ style=authoryear,
 
 \usepackage{enumitem}
 \usepackage{setspace}
-\usepackage{sagetex}
+%\usepackage{sagetex}
 
 % set font encoding for PDFLaTeX, XeLaTeX, or LuaTeX
 \usepackage{ifxetex,ifluatex}
@@ -106,12 +106,12 @@ xxxxxxxxxxxxxxxxxxxxxxx\=xxxxxxxxxxxxxxxxxxxxxxx\kill
 \large Symbol             \> \large Erläuterung\\
 \\$\mathbb{N}$            \> natürliche Zahlen\\
 \\$\mathbb{Z}$            \> ganze Zahlen\\
-\\$\mathbb{Q}$            \> rationale Zalen\\
+\\$\mathbb{Q}$            \> rationale Zahlen\\
 \\$\mathbb{I}$            \> irrationale Zahlen\\
 \\$\mathbb{R}$            \> reelle Zahlen\\
 \\$\mathbb{C}$            \> komplexe Zahlen\\
 \\$\mathbb{P}$            \> Primzahlen\\
-\\n $\in$ $\mathbb{N}$    \> das Element n ist in $\mathbb{N}$ enthalten\\
+\\n $\in$ $\mathbb{N}$    \> das Element $n$ ist in $\mathbb{N}$ enthalten\\
 \\$\forall$               \> für alle Elemente\\
 \\$\exists$               \> es existiert mindestens ein Element\\
 \\$\nexists$              \> es existiert kein Element\\
@@ -149,10 +149,10 @@ Bsp.: \textit{Eine Zahl ist Prim wenn sie eine natürliche Zahl darstellt, welch
 \subsection*{Wahre Aussagen}
 Die kommenden drei Schlagworte beschreiben Aussagen, welche wahr sind und für die es einen Beweis gibt.
 \subsubsection*{Sätze}
-Ein Satz wird auch als Theorem bezeichnet und beschreibt jedes bedeutsame Ergebnis, sofern der Kern der Aussage wahr ist.\newline
+Ein Satz wird auch als Theorem bezeichnet und beschreibt jedes bedeutsame Ergebnis, sofern die Aussage wahr ist.\newline
 Bsp.: \textit{Es gibt unendlich viele Primzahlen.}
 \subsubsection*{Lemmata}
-Der Unterschied zwischen einem Lemma und einem Theorem ist sehr undurchsichtig.
+Der Unterschied zwischen einem Lemma und einem Theorem ist nicht strikt und hängt von der Auffassung des Autors ab.
 Jedoch wird ein Lemma als weniger wichtig erachtet als ein Satz.
 Lemmata werden als Zwischenschritte herangezogen, um einen Beweis schlussendlich darzustellen.
 Oft kommt es vor, dass Lemmata sich als nützlicher erweisen als die finale Aussage des Beweises.
@@ -178,7 +178,7 @@ Sie können in Definitionen vorkommen, aber auch Tatsachen beschreiben, welche k
 \setcounter{section}{0}
 \setcounter{page}{1}
 \section{Einführung in die elementare Zahlentheorie}
-Bevor wir in die komplexe Materie der Primzahlen eintauchen können muss in erster Linie erörtert werden aus was sich Zahlen zusammensetzen und nach welchen Rechenregeln sie zerlegbar oder zu vervielfachen sind.
+Bevor wir in die komplexe Materie der Primzahlen eintauchen können muss in erster Linie erörtert werden woraus sich Zahlen zusammensetzen lassen und nach welchen Rechenregeln sie zerlegbar oder zu vervielfachen sind.
 Der nächste Abschnitt wird vielen Lesern und Leserinnen noch von der Schulzeit bekannt vorkommen.
 Die folgenden Seiten werden teils Auffrischung, teils neu sein und werden einen guten Einblick in die Zahlentheorie ermöglichen.
 Beschrieben wird in Kürze unter anderem in wie weit man Zahlen eingliedern kann und welchen Rechenregeln sie unterliegen.
@@ -275,7 +275,7 @@ Das Verhalten bei der Division ist nicht distributiv, da
 
 
 \subsection{Eingliederung von Zahlen}\label{Eingliederung von Zahlen}
-Beginnen wir mit den \textbf{natürliche Zahlen} - $\mathbb{N}$ - \{0, 1, 2, 3, 4, ...\}.\\
+Beginnen wir mit den \textbf{natürlichen Zahlen} - $\mathbb{N}$ - \{0, 1, 2, 3, 4, ...\}.\\
 Da die natürlichen Zahlen für die Primzahlen von elementarer Bedeutung sind werde ich hier in die Tiefe gehen und diese genauer beschreiben.
 Anhand der Peano-Axiome wird mittels mathematischen Formulierungen die Zahl 0 und die Anwendung der Nachfolgefunktion beschrieben.\newline 
 Man erkennt an der Zahlenreihe, dass die Zahl 0 die kleinste natürliche Zahl darstellt.
@@ -316,7 +316,7 @@ $\forall m, n \in \mathbb{N}$. $n \neq m \Rightarrow s(n) \neq s(m)$
 $(\forall M \subseteq \mathbb{N}$. $0 \in M \land \subseteq n \in \mathbb{N}$. $n \in M \Rightarrow s(n) \in M) \Rightarrow (M = \mathbb{N}$.
 \end{center}
 \item [P6] Zu einer Summe trägt die Zahl 0 nichts bei.
-Die Summe einer Zahl mit einem Nachfolger ist der Nachfolger der Summe der ursprüngllichen beiden Zahlen.
+Die Summe einer Zahl mit einem Nachfolger ist der Nachfolger der Summe der ursprünglichen beiden Zahlen.
 Sprich, bei einer Addition gelten für alle $m, n \in \mathbb{N}$ folgende Gleichungen:
 \begin{center}
 $n + 0 = n$ und $n + m^\prime = (n + m)^\prime$
@@ -334,12 +334,13 @@ $\Box$
 \end{flushright}
 Die Axiome (P1) und (P3) drücken die Sonderform der Zahl 0 in der Reihe der natürlichen Zahlen aus.
 Die Axiome (P2) und (P4) beschreiben, dass die Anwendung der Nachfolgefunktion für jede natürliche Zahl wieder eine natürliche Zahl entsteht.
-Das Axiom (P5) werde ich nicht genauer beschreiben, da dies für diese Arbeit unerheblich ist und den Rahmen sprengen würde.
+Das Axiom (P5) werde ich nicht genauer beschreiben, da dies für diese Arbeit unerheblich ist und den Rahmen sprengen würde. %brauchst du das nicht später in Beweisen?
 Die Axiome (P1) bis (P5) beziehen sich auf das Zählen, die beiden weiteren Axiome (P6) und (P7) beziehen sich auf das Rechnen mit natürlichen Zahlen (vgl. \cite[84--85]{Steffen2013}).
 
 \begin{quote}
 \small
-Durch \textbf{Lemma} wird die \textbf{Existenz und Eindeutigkeit des Vorgängers} folgendermaßen beschrieben:\newline
+Durch \textbf{Lemma} %welches lemma
+ wird die \textbf{Existenz und Eindeutigkeit des Vorgängers} folgendermaßen beschrieben:\newline
 Jede von 0 verschiedene natürliche Zahl $n$ ist Nachfolger einer eindeutig bestimmten anderen natürlichen Zahl. Diese wird auch als Vorgänger von $n$ bezeichnet.\newline
 \autocite[85]{Steffen2013}
 \end{quote}
@@ -356,9 +357,10 @@ Definitionsgemäß werden diese Zahlen folgender Maßen beschrieben:
 Nun haben wir einiges über natürliche Zahlen kennen gelernt. Sehen wir uns weitere Eingliederungen an.
 
 \textbf{Ganze Zahlen} - $\mathbb{Z} = \mathbb{N} \cup \{-n \mid n \in \mathbb{N}\}$.\newline
-Diese setzen sich wie die natürlichen Zahlen nur aus ganzen Zahlen zusammen, jedoch bestehen diese im Gegensatz zu natürlichen Zahlen nicht nur aus positiven, sondern enthält diese Menge auch negative Zahlen.
-Ebenfalls könnte man diese Zahlenreihe bis in die Unendlichkeit fortsetzen, jedoch in diesem Fall in die negative so wie auch in die positive Richtung \{-3, -2, -1, 0, 1, 2, 3, ...\}.
-Hier gibt es eine weitere Untermenge:
+Diese Menge vervollständigt die Subtraktion auf den natürlichen Zahlen: $m - n \in \mathbb{Z}$ wenn $m, n \in \mathbb{N}$. 
+Für 
+Ebenfalls könnte man diese Zahlenreihe bis in die Unendlichkeit fortsetzen, jedoch in diesem Fall in die negative so wie auch in die positive Richtung \{..., -3, -2, -1, 0, 1, 2, 3, ...\}.
+Hier gibt es eine weitere wichtige Teilmengen: %da ist aber nur eine
 \begin{itemize}
 \item $\mathbb{Z}^*$ - sind alle ganzen Zahlen ohne der Zahl 0
 \end{itemize}
@@ -371,10 +373,11 @@ Auch 0,758 lässt sich als Bruch darstellen $\rightarrow{0,758 = 758/1000}$.
 Diese Zahlen können positiv als aus negativ sein und können unter anderem eine unendliche Anzahl an Nachkommastellen aufweisen \{-7/5, -2/4, 1/2, 0,75, ...\}.
 
 \textbf{Irrationale Zahlen} - $\mathbb{I}$\newline
-Es handelt sich hier um Zahlen, welche nicht mittels eines Buches dargestellt werden können.
+Es handelt sich hier um Zahlen, welche nicht mittels eines Bruches dargestellt werden können.
 Zum Beispiel ist die Kreiszahl $\pi$ (Umfang / Durchmesser) 3,141592654…, oder die Eulersche Zahl $\mathrm{e}$ 2,718281828… eine irrationale Zahl.
-Man erkennt, dass diese Art von Zahlen niemals periodisch werden.
-Ebenso gilt, dass alle Wurzeln natürlicher Zahlen, welche keine natürlichen Zahlen ergeben, ebenfalls irrational sind ($\sqrt{5}$).
+%Man erkennt, dass diese Art von Zahlen niemals periodisch werden. -- Das ist nicht so leicht zu erkennen, dafür braucht man aufwendige Beweise!
+%Besser: Man kann zeigen, dass diese ... 
+Ebenso gilt, dass alle Wurzeln natürlicher Zahlen, welche keine natürlichen Zahlen ergeben, ebenfalls irrational sind, z.B. ($\sqrt{5}$).
 
 \textbf{Reelle Zahlen} - $\mathbb{R}$\newline
 Diese setzen sich aus den rationalen und den irrationalen Zahlen zusammen (vgl. \cite[7--9]{Engel2017} und \cite[5--6]{Houston2012}).
@@ -559,7 +562,7 @@ Ich werde bei den Grundlagen dieser Thematik genauer in die Tiefe gehen, um die 
 Wichtig ist hier im ersten Schritt zu verstehen, dass die modulare Arithmetik eine differenziere Betrachtungsweise der Additions- bzw. Multiplikationsrechnung darstellt.
 \begin{figure}[h]
  \centering
- \includegraphics{Uhr}
+% \includegraphics{Uhr}
  \caption{Tageszeiten im Vergleich mit kongruenten Zahlen}
  \label{fig:Tageszeiten im Vergleich mit kongruenten Zahlen}
  \autocite[298]{Meinel2011}
